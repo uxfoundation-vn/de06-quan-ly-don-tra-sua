@@ -126,6 +126,8 @@ AC04: Mất kết nối → báo đỏ trên màn; có kết nối lại thì t�
 
 #### US1.2 Đánh dấu ly xong
 
+User Story: Là pha chế, tôi muốn đánh dấu từng ly bằng một chạm để không quên ly.
+
 AC01: Chạm ly → gạch ngang, dấu tích; chạm lại để bỏ.
 
 AC02: Chạm ly đầu tiên → đơn chuyển "Đang pha chế".
@@ -136,6 +138,8 @@ AC04: Nút "Xong cả đơn" cho đơn nhiều ly.
 
 #### US1.3 Không bỏ quên đơn
 
+User Story: Là pha chế, tôi muốn thấy rõ đơn chờ lâu để không bỏ quên khách.
+
 AC01: Thẻ đổi màu ở 5 phút và 10 phút, kèm biểu tượng và chữ.
 
 AC02: Đơn trễ > 10 phút luôn được ghim lên đầu hàng đợi.
@@ -143,6 +147,8 @@ AC02: Đơn trễ > 10 phút luôn được ghim lên đầu hàng đợi.
 ### UC2. Gọi khách và giao
 
 #### US2.1 Gọi khách
+
+User Story: Là pha chế, tôi muốn gọi khách khi đơn sẵn sàng để khách nhận ly đúng lúc.
 
 AC01: Đơn Sẵn sàng → số hiện trên màn hình khách, kèm âm báo.
 

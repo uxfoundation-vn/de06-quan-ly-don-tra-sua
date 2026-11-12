@@ -131,6 +131,8 @@ AC04: Lịch sử biến động từng nguyên liệu: bán, huỷ, nhập, đi
 
 #### US1.2 Nhập kho
 
+User Story: Là quản lý ca, tôi muốn nhập kho nhanh để tồn khớp thực tế.
+
 AC01: Phiếu nhập gồm nhiều dòng: nguyên liệu, số lượng theo đơn vị mua, quy đổi tự động.
 
 AC02: Lưu phiếu → tồn tăng ngay, ghi người nhập, thời gian.
@@ -138,6 +140,8 @@ AC02: Lưu phiếu → tồn tăng ngay, ghi người nhập, thời gian.
 AC03: Sửa phiếu đã lưu chỉ trong ngày, cần PIN chủ quán.
 
 #### US1.3 Kiểm kê và điều chỉnh
+
+User Story: Là quản lý ca, tôi muốn kiểm kê và ghi hao hụt để tồn hệ thống khớp số đếm thực tế.
 
 AC01: Kiểm kê: chọn nguyên liệu, nhập số đếm thực tế; hiện chênh lệch so với tồn hệ thống.
 
@@ -148,6 +152,8 @@ AC03: Ghi hao hụt riêng (đổ vỡ, hỏng) có lý do.
 ### UC2. Ca làm việc
 
 #### US2.1 Mở ca
+
+User Story: Là quản lý ca, tôi muốn mở ca và nhập tiền đầu ca để cuối ca biết có lệch tiền không.
 
 AC01: Đầu ngày POS yêu cầu mở ca; nhập tiền đầu ca.
 
@@ -168,6 +174,8 @@ AC04: Chốt xong in và lưu báo cáo ca; ca mới mở được ngay.
 ### UC3. Báo cáo
 
 #### US3.1 Báo cáo ngày
+
+User Story: Là chủ quán, tôi muốn xem doanh thu, món bán chạy trong ngày để ra quyết định kinh doanh.
 
 AC01: Trang đầu Web: doanh thu hôm nay, số đơn, số ly, so với cùng ngày tuần trước.
 

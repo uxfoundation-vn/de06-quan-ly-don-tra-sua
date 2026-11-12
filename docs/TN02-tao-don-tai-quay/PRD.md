@@ -132,6 +132,8 @@ AC04: Mỗi thẻ có nút "+" thêm nhanh với size và tuỳ chọn mặc đ�
 
 #### US1.2 Chọn tuỳ chọn
 
+User Story: Là thu ngân, tôi muốn chọn tuỳ chọn với giá trị mặc định có sẵn để ít chạm, ít sai.
+
 AC01: Màn tuỳ chọn hiện các nhóm theo thứ tự của món, giá trị mặc định đã chọn.
 
 AC02: Giá ly cập nhật ngay khi đổi size, topping.
@@ -148,6 +150,8 @@ AC06: Nút "Thêm vào đơn" kèm số lượng.
 
 #### US2.1 Sửa, nhân bản, xoá dòng
 
+User Story: Là thu ngân, tôi muốn sửa, nhân bản, xoá dòng trong giỏ để nhập nhóm ly giống nhau nhanh.
+
 AC01: Mỗi dòng ghi tên, size, số lượng, giá; dòng phụ chỉ ghi tuỳ chọn khác mặc định, chữ đậm.
 
 AC02: Chạm dòng mở lại màn tuỳ chọn để sửa.
@@ -159,6 +163,8 @@ AC04: Nút +, − đổi số lượng; giảm về 0 thì hỏi xoá dòng.
 AC05: Món trong giỏ vừa hết → dòng báo đỏ, phải đổi hoặc xoá mới thanh toán được.
 
 #### US2.2 Giảm giá đơn
+
+User Story: Là thu ngân, tôi muốn giảm giá cho đơn kèm lý do để xử lý khách quen, bồi thường đúng quyền hạn.
 
 AC01: Giảm theo % hoặc số tiền, chọn lý do (khách quen, bồi thường, khác).
 

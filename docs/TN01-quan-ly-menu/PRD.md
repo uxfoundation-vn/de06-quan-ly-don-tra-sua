@@ -125,6 +125,8 @@ AC03: Sửa nhóm → áp dụng cho mọi món đang gắn nhóm, có báo số
 
 #### US1.2 Thêm và sửa món
 
+User Story: Là chủ quán, tôi muốn thêm món với size, giá, tuỳ chọn để bán được ngay trên POS.
+
 AC01: Món có tên, ảnh, mô tả ngắn, danh mục, 1–3 size với giá từng size.
 
 AC02: Gắn nhóm tuỳ chọn và thứ tự hiện trên POS.
