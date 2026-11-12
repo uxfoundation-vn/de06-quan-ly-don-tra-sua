@@ -184,6 +184,11 @@ flowchart TD
 
 ### UC-08 Sang thanh toán
 
+| **Mục** | **Nội dung** |
+| --- | --- |
+| Tiền điều kiện | Ca đang mở; đơn `DANG_TAO` có ít nhất 1 dòng |
+| Hậu điều kiện | Đơn `CHO_THANH_TOAN`, tổng đơn bị khoá; mở màn thanh toán (SRS TN04) |
+
 | **Bước** | **Actor** | **Mô tả** |
 | --- | --- | --- |
 | 1 | Thu ngân | Chọn hình thức `MANG_DI` hoặc `TAI_QUAN` (BR-21) |
@@ -269,6 +274,17 @@ sequenceDiagram
   S-->>P: CHO_THANH_TOAN, tổng đã khoá
   P->>T: SCR-P03, TN04
 ```
+
+**Map lỗi → thông báo** `[giả định]`
+
+| **Nhóm lỗi** | **Message** |
+| --- | --- |
+| Chưa mở ca | MSG-09 |
+| Vượt 30 dòng mỗi đơn | MSG-10 |
+| PIN sai hoặc không đủ quyền | MSG-12 |
+| Vượt 5 đơn giữ | MSG-14 |
+| Giá menu đổi so với lúc giữ đơn | MSG-16 |
+| Mất mạng khi đồng bộ đơn | Không báo lỗi; đơn lưu trên máy, đồng bộ khi có mạng |
 
 ## 9. Danh sách thông báo
 

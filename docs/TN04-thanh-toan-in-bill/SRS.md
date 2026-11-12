@@ -163,6 +163,11 @@ flowchart TD
 
 ### UC-14 In lại bill, tem
 
+| **Mục** | **Nội dung** |
+| --- | --- |
+| Tiền điều kiện | Đơn đã `DA_THANH_TOAN` trở đi, thuộc ca đang mở |
+| Hậu điều kiện | Bill hoặc tem được in lại kèm ghi chú "In lại lần n"; bỏ cờ `CHUA_IN` nếu có |
+
 ```mermaid
 flowchart TD
   A["SCR-P04 Đơn trong ca"] --> B["Chọn đơn"]
@@ -288,6 +293,19 @@ sequenceDiagram
     S->>P: PaymentEvent THIEU_TIEN, còn thiếu
   end
 ```
+
+**Map lỗi → thông báo** `[giả định]`
+
+| **Nhóm lỗi** | **Message** |
+| --- | --- |
+| Tiền khách đưa chưa đủ | MSG-23 |
+| Chưa nhận được thanh toán QR, quá thời gian chờ | MSG-25 |
+| Nhận thiếu tiền | MSG-26 |
+| Nhận dư tiền | MSG-29 |
+| Mất mạng | MSG-27 |
+| Máy in lỗi hoặc hết giấy | MSG-28 |
+| Huỷ đơn đã giao quá 30 phút | MSG-30 |
+| PIN quản lý ca sai hoặc không đủ quyền | MSG-12 (SRS TN02) |
 
 ## 9. Danh sách thông báo
 

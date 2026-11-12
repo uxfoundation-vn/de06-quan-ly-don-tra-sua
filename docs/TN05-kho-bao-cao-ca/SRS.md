@@ -135,6 +135,11 @@ flowchart TD
 
 ### UC-18 Mở ca
 
+| **Mục** | **Nội dung** |
+| --- | --- |
+| Tiền điều kiện | Nhân viên đã đăng nhập POS; ca `CHUA_MO`; ca trước đã `DA_CHOT` |
+| Hậu điều kiện | Ca `DANG_MO` với tiền đầu ca; món, tuỳ chọn hết của hôm trước bật lại (SRS TN01) |
+
 | **Bước** | **Actor** | **Mô tả** |
 | --- | --- | --- |
 | 1 | Thu ngân, quản lý ca | Đăng nhập POS khi chưa có ca `DANG_MO` → **SCR-P06** chế độ Mở ca |
@@ -187,6 +192,11 @@ flowchart TD
 | 7 | POS | In báo cáo ca; về chế độ Mở ca |
 
 ### UC-20 Xem báo cáo
+
+| **Mục** | **Nội dung** |
+| --- | --- |
+| Tiền điều kiện | Chủ quán đăng nhập Web quản lý |
+| Hậu điều kiện | Không thay đổi dữ liệu; báo cáo ca đã chốt là bản chụp (BR-57) |
 
 ```mermaid
 flowchart TD
@@ -282,6 +292,17 @@ sequenceDiagram
   W->>S: ReportGet hôm nay
   S-->>W: Doanh thu, ca, bán chạy
 ```
+
+**Map lỗi → thông báo** `[giả định]`
+
+| **Nhóm lỗi** | **Message** |
+| --- | --- |
+| Sửa phiếu nhập quá hạn hoặc thiếu PIN chủ quán | MSG-38 |
+| Ca cũ chưa chốt | MSG-39 |
+| Chốt ca khi còn đơn chưa xử lý | MSG-40 |
+| Chênh lệch két vượt ngưỡng | MSG-43 |
+| Tồn âm | MSG-37 |
+| Xuất báo cáo thất bại | Thông báo lỗi chung của app (ngoài bộ MSG của SRS này), cho thử lại |
 
 ## 9. Danh sách thông báo
 

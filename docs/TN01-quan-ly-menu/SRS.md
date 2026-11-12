@@ -169,6 +169,11 @@ flowchart TD
 
 ### UC-04 Ẩn, xoá món
 
+| **Mục** | **Nội dung** |
+| --- | --- |
+| Tiền điều kiện | Chủ quán đăng nhập Web quản lý; món đang `DANG_BAN`, `HET_MON` (để ẩn) hoặc `NHAP`, `AN` (để xoá) |
+| Hậu điều kiện | Món `AN` hoặc `DA_XOA`; báo cáo cũ vẫn giữ tên, giá (BR-10) |
+
 ```mermaid
 flowchart TD
   A["SCR-W01 → menu món → Xoá"] --> B{"Món có trong đơn chưa ở trạng thái cuối?"}
@@ -246,6 +251,17 @@ sequenceDiagram
     S-->>P: Thay đổi còn thiếu
   end
 ```
+
+**Map lỗi → thông báo** `[giả định]`
+
+| **Nhóm lỗi** | **Message** |
+| --- | --- |
+| Trùng tên món | MSG-04 |
+| Giá không hợp lệ | MSG-05 |
+| Ảnh sai định dạng hoặc quá dung lượng | MSG-06 |
+| Xoá món còn trong đơn chưa hoàn tất | MSG-08 |
+| Món hoặc tuỳ chọn vừa hết khi đang bán | MSG-07 |
+| Lưu menu thất bại | Thông báo lỗi chung của app (ngoài bộ MSG của SRS này), cho thử lại; giữ nội dung đang sửa |
 
 ## 9. Danh sách thông báo
 

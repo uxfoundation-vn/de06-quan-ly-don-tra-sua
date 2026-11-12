@@ -247,6 +247,15 @@ sequenceDiagram
   S->>C: Gỡ số
 ```
 
+**Map lỗi → thông báo** `[giả định]`
+
+| **Nhóm lỗi** | **Message** |
+| --- | --- |
+| Mất kết nối | MSG-17 |
+| Kết nối lại | MSG-18 |
+| Vượt 3 lần gọi khách | MSG-19 |
+| Đánh dấu ly của đơn đã bị huỷ | MSG-20 hoặc MSG-21 |
+
 ## 9. Danh sách thông báo
 
 | **ID** | **Nơi hiện** | **Nội dung (VI)** |
