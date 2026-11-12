@@ -52,6 +52,9 @@ stateDiagram-v2
   [*] --> DU : Tạo nguyên liệu, nhập kho
   DU --> SAP_HET : Tồn dưới ngưỡng
   SAP_HET --> HET : Tồn bằng 0
+  DU --> HET : Một đơn lớn hoặc kiểm kê đưa tồn về 0
+  DU --> AM : Một đơn lớn hoặc kiểm kê đưa tồn xuống âm
+  SAP_HET --> AM : Một đơn đưa tồn xuống âm
   HET --> AM : Tiếp tục bán
   SAP_HET --> DU : Nhập kho, kiểm kê
   HET --> DU : Nhập kho

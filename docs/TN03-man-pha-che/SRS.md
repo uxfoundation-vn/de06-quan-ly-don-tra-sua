@@ -53,6 +53,8 @@ stateDiagram-v2
   SAN_SANG --> DA_GIAO : Chạm Đã giao hoặc sau 15 phút
   DA_THANH_TOAN --> DA_HUY : Huỷ, TN04
   DANG_PHA_CHE --> DA_HUY : Huỷ, TN04
+  SAN_SANG --> DA_HUY : Huỷ, TN04
+  DA_GIAO --> DA_HUY : Huỷ trong 30 phút, TN04
   DA_GIAO --> [*]
   DA_HUY --> [*]
 ```
@@ -154,6 +156,14 @@ flowchart TD
   G --> H["DA_GIAO, gỡ khỏi màn pha chế và màn khách"]
   C -->|Không ai chạm 15 phút| I["Tự DA_GIAO BR-30, ghi auto_delivered"]
 ```
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Khách báo ly sai khi đơn còn `SAN_SANG`, quán làm lại | Pha chế bỏ đánh dấu ly đó (BR-28): đơn về `DANG_PHA_CHE`, gỡ số khỏi màn khách; làm lại rồi đánh dấu `XONG`. Nguyên liệu của ly hỏng ghi hao hụt ở SRS TN05 `[giả định]` |
+| A2 | Khách báo ly sai sau khi đơn `DA_GIAO` | Trong 30 phút: thu ngân huỷ đơn và hoàn tiền theo SRS TN04 (lý do "Làm sai món"), rồi tạo đơn mới nếu khách muốn làm lại. Quá 30 phút: quản lý ca xử lý ngoài hệ thống `[giả định]` |
+| A3 | Khách không tới nhận | Đơn tự `DA_GIAO` sau 15 phút (BR-30) với cờ `auto_delivered`; ly để ở quầy, không hoàn tiền |
 
 ### UC-11 Đơn bị huỷ trên màn pha chế
 

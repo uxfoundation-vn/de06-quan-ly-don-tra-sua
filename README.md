@@ -31,6 +31,11 @@ stateDiagram-v2
   SAN_SANG --> DA_GIAO : Khách nhận, TN03
   DA_THANH_TOAN --> DA_HUY : Huỷ và hoàn tiền, TN04
   DANG_PHA_CHE --> DA_HUY : Huỷ và hoàn tiền, TN04
+  SAN_SANG --> DANG_PHA_CHE : Bỏ đánh dấu một ly, TN03
+  SAN_SANG --> DA_HUY : Huỷ và hoàn tiền, TN04
+  DA_GIAO --> DA_HUY : Huỷ trong 30 phút sau khi giao, TN04
+  CHO_THANH_TOAN --> DA_HUY : Chuyển khoản thiếu, khách không trả tiếp, TN04
+  TAM_GIU --> DA_BO : Bỏ đơn giữ, TN02
   DANG_TAO --> DA_BO : Bỏ đơn
   DA_GIAO --> [*]
   DA_HUY --> [*]

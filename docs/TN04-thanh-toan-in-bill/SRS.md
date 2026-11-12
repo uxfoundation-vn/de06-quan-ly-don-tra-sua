@@ -33,7 +33,7 @@
 | BR-34 | **Mệnh giá gợi ý**: số tiền đúng; mệnh giá tiền Việt Nam nhỏ nhất ≥ tổng; và 2 mệnh giá kế tiếp trong {10.000, 20.000, 50.000, 100.000, 200.000, 500.000} `[giả định]` |
 | BR-35 | **Tiền mặt**: tiền khách đưa ≥ tổng; tiền thối = khách đưa − tổng |
 | BR-36 | **QR động**: chuẩn QR chuyển khoản, chứa tài khoản quán, số tiền = tổng, nội dung = mã đơn 8 ký tự; hiệu lực 10 phút; mỗi đơn tối đa 1 QR còn hiệu lực |
-| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → giữ `CHO_THANH_TOAN`, ghi số đã nhận, báo còn thiếu (MSG-26) |
+| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → đơn `THIEU_TIEN`, ghi số đã nhận, báo còn thiếu (MSG-26). Khách không trả tiếp → thu ngân bấm "Huỷ thanh toán" kèm PIN quản lý ca: số đã nhận ghi `tien_du` cần hoàn (`CHO_HOAN`), đơn `DA_HUY`, không cấp số thứ tự, không trừ kho `[giả định]` |
 | BR-38 | **Chờ xác nhận** quá 2 phút → hiện MSG-25 với "Kiểm tra lại" (gọi tra cứu giao dịch) và "Đổi sang tiền mặt". Không có thao tác đánh dấu QR thủ công |
 | BR-39 | **Đổi phương thức** khi đang chờ QR: huỷ QR; nếu sau đó vẫn nhận tiền QR của đơn → ghi `tien_du` cần hoàn, báo quản lý ca |
 | BR-40 | **Khi `DA_THANH_TOAN`** (một giao dịch duy nhất): cấp số thứ tự kế tiếp trong ngày; ghi `paid_at`; đẩy sang màn pha chế (TN03); trừ kho theo công thức (TN05); gửi lệnh in |
@@ -53,7 +53,8 @@ stateDiagram-v2
   CHO_THANH_TOAN --> CHO_QR : Chọn QR
   CHO_QR --> DA_THANH_TOAN : Nhận đủ tiền
   CHO_QR --> THIEU_TIEN : Nhận thiếu
-  THIEU_TIEN --> DA_THANH_TOAN : Nhận đủ phần còn lại
+  THIEU_TIEN --> DA_THANH_TOAN : Nhận đủ phần còn lại, QR hoặc tiền mặt
+  THIEU_TIEN --> DA_HUY : Khách không trả tiếp, hoàn phần đã nhận
   CHO_QR --> CHO_THANH_TOAN : Đổi phương thức hoặc QR hết hạn
   CHO_THANH_TOAN --> DA_THANH_TOAN : Tiền mặt hoàn tất
   CHO_THANH_TOAN --> [*] : Quay lại sửa, về DANG_TAO
@@ -151,6 +152,7 @@ flowchart TD
 | A3 | Quá 2 phút | MSG-25 (BR-38) |
 | A4 | Đổi sang tiền mặt | Huỷ QR (BR-39) |
 | A5 | QR hết hạn | Tạo QR mới, QR cũ bị vô hiệu |
+| A6 | Khách chuyển thiếu rồi không trả tiếp | Thu ngân bấm "Huỷ thanh toán", nhập PIN quản lý ca; số đã nhận thành `tien_du` cần hoàn (`CHO_HOAN`); đơn `DA_HUY` (BR-37). Nhờ vậy ca vẫn chốt được theo BR-55 |
 
 **Luồng lỗi**
 
