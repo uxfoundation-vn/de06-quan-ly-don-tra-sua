@@ -90,6 +90,30 @@ flowchart TD
   H --> I["Đồng bộ POS, màn pha chế BR-09"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Chủ quán | **SCR-W01** → Nhóm tuỳ chọn → thêm hoặc sửa nhóm |
+| 2 | Chủ quán | Nhập tên, kiểu chọn, min, max, mặc định (BR-04) |
+| 3 | Chủ quán | Nhập danh sách lựa chọn: tên, giá cộng, số phần tối đa, công thức |
+| 4 | Hệ thống | Kiểm tra hợp lệ |
+| 5 | Hệ thống | Gọi \[OptionGroupSave\], tạo `menu_version` mới |
+| 6 | Hệ thống | Đồng bộ POS và màn pha chế (BR-09) |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Nhóm đang gắn với món | MSG-01 báo số món bị ảnh hưởng; chọn Lưu → bước 5, chọn Huỷ → quay lại sửa |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Dữ liệu không hợp lệ, ví dụ min > max | Lỗi inline, không lưu |
+| E2 | Lưu thất bại | Báo lỗi, giữ nội dung đang sửa, cho thử lại |
+
 ### UC-02 Thêm, sửa món
 
 | **Mục** | **Nội dung** |
@@ -167,6 +191,30 @@ flowchart TD
   L["Mở ca mới"] --> M["Tự bật lại mọi HET_MON, HET BR-07"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Quản lý ca | Trên POS, giữ lâu vào món và nhập PIN quản lý ca |
+| 2 | Quản lý ca | Chọn báo hết cả món hoặc một tuỳ chọn |
+| 3 | Hệ thống | Món `HET_MON`, hoặc lựa chọn `HET` trên mọi món |
+| 4 | Hệ thống | Gọi \[AvailabilitySet\], đẩy realtime |
+| 5 | Hệ thống | POS hiện mờ kèm nhãn "Hết", không chọn được |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Chủ quán thao tác trên Web | Dùng công tắc "Đang bán" ở **SCR-W01**, không cần PIN |
+| A2 | Món vừa hết đang nằm trong giỏ chưa thanh toán | Dòng đó trong giỏ hiện MSG-07 |
+| A3 | Mở ca mới | Tự bật lại mọi `HET_MON`, `HET` (BR-07) |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | PIN sai hoặc không đủ quyền | MSG-12 (SRS TN02), không đổi trạng thái |
+
 ### UC-04 Ẩn, xoá món
 
 | **Mục** | **Nội dung** |
@@ -182,6 +230,28 @@ flowchart TD
   B -->|Không| E["Xác nhận xoá"]
   E --> F["DA_XOA; báo cáo vẫn giữ tên, giá cũ BR-10"]
 ```
+
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Chủ quán | **SCR-W01** → menu của món → Xoá |
+| 2 | Hệ thống | Kiểm tra món không nằm trong đơn chưa ở trạng thái cuối |
+| 3 | Hệ thống | Hỏi xác nhận xoá |
+| 4 | Chủ quán | Xác nhận |
+| 5 | Hệ thống | Món `DA_XOA`; báo cáo cũ vẫn giữ tên, giá (BR-10) |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Chọn Ẩn thay cho Xoá | Món `AN`: không hiện trên POS, vẫn giữ trong menu |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Món đang có trong đơn chưa hoàn tất | MSG-08: không xoá được, gợi ý Ẩn |
 
 ## 6. Điểm vào
 
@@ -252,7 +322,7 @@ sequenceDiagram
   end
 ```
 
-**Map lỗi → thông báo** `[giả định]`
+**Map lỗi → thông báo**
 
 | **Nhóm lỗi** | **Message** |
 | --- | --- |
@@ -286,5 +356,6 @@ Bản EN: `[chờ bổ sung]`.
 | Offline | POS dùng menu đã lưu khi mất mạng; hiện "Menu chưa cập nhật" khi chênh phiên bản |
 | Toàn vẹn | Dòng đơn lưu bản chụp tên, size, tuỳ chọn, giá tại thời điểm bán |
 | Audit | Ghi nhật ký đổi giá, bật tắt bán: ai, lúc nào, giá trị cũ, mới |
+| Bảo mật | Chỉ chủ quán sửa menu và giá; quản lý ca chỉ báo hết món, hết tuỳ chọn; mọi thao tác yêu cầu đăng nhập |
 | Tracking | Thêm, sửa món; đổi giá; bật tắt bán (nguồn POS hay Web); món thiếu công thức |
 | Accessibility | Công tắc có nhãn chữ "Đang bán / Hết"; bảng dùng được bằng bàn phím; kéo thả có thao tác thay thế |

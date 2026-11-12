@@ -157,13 +157,23 @@ flowchart TD
   C -->|Không ai chạm 15 phút| I["Tự DA_GIAO BR-30, ghi auto_delivered"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Hệ thống | Đơn `SAN_SANG`: màn khách hiện "Mời nhận" kèm số và âm báo |
+| 2 | Khách | Tới quầy nhận ly |
+| 3 | Pha chế | Chạm Đã giao |
+| 4 | Hệ thống | Đơn `DA_GIAO`; gỡ khỏi màn pha chế và màn khách |
+
 **Luồng thay thế**
 
 | **Mã** | **Điều kiện** | **Xử lý** |
 | --- | --- | --- |
-| A1 | Khách báo ly sai khi đơn còn `SAN_SANG`, quán làm lại | Pha chế bỏ đánh dấu ly đó (BR-28): đơn về `DANG_PHA_CHE`, gỡ số khỏi màn khách; làm lại rồi đánh dấu `XONG`. Nguyên liệu của ly hỏng ghi hao hụt ở SRS TN05 `[giả định]` |
-| A2 | Khách báo ly sai sau khi đơn `DA_GIAO` | Trong 30 phút: thu ngân huỷ đơn và hoàn tiền theo SRS TN04 (lý do "Làm sai món"), rồi tạo đơn mới nếu khách muốn làm lại. Quá 30 phút: quản lý ca xử lý ngoài hệ thống `[giả định]` |
+| A1 | Khách báo ly sai khi đơn còn `SAN_SANG`, quán làm lại | Pha chế bỏ đánh dấu ly đó (BR-28): đơn về `DANG_PHA_CHE`, gỡ số khỏi màn khách; làm lại rồi đánh dấu `XONG`. Nguyên liệu của ly hỏng ghi hao hụt ở SRS TN05 |
+| A2 | Khách báo ly sai sau khi đơn `DA_GIAO` | Trong 30 phút: thu ngân huỷ đơn và hoàn tiền theo SRS TN04 (lý do "Làm sai món"), rồi tạo đơn mới nếu khách muốn làm lại. Quá 30 phút: quản lý ca xử lý ngoài hệ thống |
 | A3 | Khách không tới nhận | Đơn tự `DA_GIAO` sau 15 phút (BR-30) với cờ `auto_delivered`; ly để ở quầy, không hoàn tiền |
+| A4 | Khách chưa tới sau 30 giây | Pha chế chạm Gọi lại: phát âm báo, nhấp nháy số; tối đa 3 lần, sau đó nút disabled kèm MSG-19 |
 
 ### UC-11 Đơn bị huỷ trên màn pha chế
 
@@ -183,6 +193,27 @@ flowchart TD
   F --> G
   G --> H["Màn khách gỡ số nếu đang hiện"]
 ```
+
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Thu ngân | Huỷ đơn (SRS TN04) |
+| 2 | Hệ thống | Phát \[KdsEvent\] `ORDER_CANCELLED` |
+| 3 | Hệ thống | Thẻ đơn hiện nhãn "ĐÃ HUỶ" kèm âm báo riêng, MSG-21 |
+| 4 | Hệ thống | Tự gỡ thẻ sau 30 giây; màn khách gỡ số nếu đang hiện |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Đơn có ly đã `XONG` | MSG-20 nêu số ly đã làm; ghi nhật ký (BR-31) |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Màn pha chế mất kết nối lúc đơn bị huỷ | Khi kết nối lại, \[KdsSync\] cập nhật thẻ thành "ĐÃ HUỶ" (MSG-18) |
 
 ## 6. Điểm vào
 
@@ -247,7 +278,7 @@ sequenceDiagram
   S->>C: Gỡ số
 ```
 
-**Map lỗi → thông báo** `[giả định]`
+**Map lỗi → thông báo**
 
 | **Nhóm lỗi** | **Message** |
 | --- | --- |
@@ -277,5 +308,7 @@ Bản EN: `[chờ bổ sung]`.
 | Tin cậy | Không mất đơn khi màn pha chế khởi động lại hoặc mất mạng: \[KdsSync\] khôi phục đầy đủ |
 | Hiển thị | Chữ tên món ≥ 22 px, số thứ tự ≥ 40 px; tương phản cao; chế độ nền tối |
 | Âm thanh | Hai âm khác nhau cho đơn mới và đơn huỷ; âm lượng chỉnh được |
+| Bảo mật | Màn pha chế chỉ hiện số đơn và món, không hiện tiền hay thông tin thanh toán; màn khách chỉ hiện số thứ tự |
+| Log / audit | Mỗi ly: thời điểm đánh dấu, bỏ đánh dấu; mỗi đơn: thời điểm sẵn sàng, số lần gọi, giao tay hay tự giao |
 | Tracking | Độ trễ hiện đơn, thời gian pha từng đơn, số đơn trễ, gọi lại, tự giao, đơn huỷ có ly đã làm |
 | Accessibility | Mức thời gian chờ có chữ và biểu tượng, không chỉ màu; tuỳ chọn khác chuẩn có dấu "•" ngoài in đậm |

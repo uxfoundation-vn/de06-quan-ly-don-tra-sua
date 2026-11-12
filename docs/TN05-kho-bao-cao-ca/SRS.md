@@ -104,6 +104,30 @@ flowchart TD
   K -->|Chạm Báo hết món| N["AvailabilitySet các món, TN01"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Hệ thống | Đơn chuyển `DA_THANH_TOAN` |
+| 2 | Hệ thống | Với mỗi ly: tính nguyên liệu theo công thức size + tuỳ chọn × số phần |
+| 3 | Hệ thống | Ghi biến động `BAN`, trừ tồn |
+| 4 | Hệ thống | Tính lại trạng thái tồn (BR-49) |
+| 5 | Hệ thống | Trạng thái xấu đi → cảnh báo: `SAP_HET` MSG-35, `HET` MSG-36 kèm gợi ý báo hết món, `AM` MSG-37 |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Đơn `DA_HUY`, ly chưa `XONG` | Ghi biến động `HOAN`, cộng lại tồn |
+| A2 | Đơn `DA_HUY`, ly đã `XONG` | Đổi biến động `BAN` thành `HAO_HUT` |
+| A3 | Chạm "Báo hết món" trên MSG-36 | Gọi \[AvailabilitySet\] cho các món liên quan (SRS TN01) |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Món thiếu công thức | Bỏ qua phần thiếu, gắn cờ để nhắc bổ sung công thức (MSG-44) |
+
 ### UC-17 Nhập kho, hao hụt, kiểm kê
 
 | **Mục** | **Nội dung** |
@@ -133,12 +157,38 @@ flowchart TD
   P -->|Có| Q["Ghi biến động điều chỉnh, giữ lịch sử"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Quản lý ca | **SCR-W03** Kho → Nhập kho |
+| 2 | Quản lý ca | Thêm dòng nguyên liệu, số lượng theo đơn vị mua |
+| 3 | Hệ thống | Quy đổi (BR-46), cho xem trước tồn mới |
+| 4 | Quản lý ca | Lưu phiếu |
+| 5 | Hệ thống | Ghi biến động `NHAP`, tính lại trạng thái tồn |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Ghi hao hụt | Chọn nguyên liệu, số lượng, lý do → biến động `HAO_HUT` |
+| A2 | Kiểm kê | Chọn nguyên liệu hoặc tất cả → nhập số đếm → hiện chênh lệch; chênh > 10% phải ghi chú → xác nhận → biến động `KIEM_KE` |
+| A3 | Sửa phiếu nhập trong ngày | Cần PIN chủ quán; ghi biến động điều chỉnh, giữ lịch sử |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Sửa phiếu nhập quá ngày hoặc thiếu PIN chủ quán | MSG-38 |
+
 ### UC-18 Mở ca
 
 | **Mục** | **Nội dung** |
 | --- | --- |
 | Tiền điều kiện | Nhân viên đã đăng nhập POS; ca `CHUA_MO`; ca trước đã `DA_CHOT` |
 | Hậu điều kiện | Ca `DANG_MO` với tiền đầu ca; món, tuỳ chọn hết của hôm trước bật lại (SRS TN01) |
+
+**Luồng chính**
 
 | **Bước** | **Actor** | **Mô tả** |
 | --- | --- | --- |
@@ -210,6 +260,29 @@ flowchart TD
   G -->|Xuất CSV| I["Tải file"]
   E -->|Chạm một ca| J["Báo cáo ca đã chụp BR-57"]
 ```
+
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Chủ quán | Mở **SCR-W04** Báo cáo trên Web |
+| 2 | Hệ thống | Mặc định Hôm nay: doanh thu, số đơn, số ly, so với cùng ngày tuần trước |
+| 3 | Hệ thống | Hiện doanh thu theo giờ, theo phương thức, theo ca, chênh lệch két |
+| 4 | Hệ thống | Hiện top món, topping theo số ly; giảm giá, huỷ kèm người duyệt |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Đổi khoảng ngày | Tổng hợp lại theo BR-58 |
+| A2 | Chạm một ca | Mở báo cáo ca đã chụp lúc chốt (BR-57) |
+| A3 | Xuất CSV | Tải file báo cáo của khoảng đang xem |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Không tải được báo cáo hoặc xuất file thất bại | Báo lỗi, cho thử lại |
 
 ## 6. Điểm vào
 
@@ -293,7 +366,7 @@ sequenceDiagram
   S-->>W: Doanh thu, ca, bán chạy
 ```
 
-**Map lỗi → thông báo** `[giả định]`
+**Map lỗi → thông báo**
 
 | **Nhóm lỗi** | **Message** |
 | --- | --- |
@@ -329,5 +402,6 @@ MSG-33 dùng lại từ SRS TN04. Bản EN: `[chờ bổ sung]`.
 | Toàn vẹn | Trừ kho nằm trong cùng giao dịch với chuyển `DA_THANH_TOAN`; biến động kho không xoá, chỉ thêm điều chỉnh |
 | Audit | Báo cáo ca chụp lại, không sửa sau khi chốt; mọi phiếu nhập, kiểm kê, hao hụt ghi người và thời gian |
 | Offline | Mở ca, bán tiền mặt chạy ngoại tuyến; chốt ca cần đồng bộ (BR-55) |
+| Bảo mật | Báo cáo doanh thu chỉ chủ quán xem; nhập kho, kiểm kê, chốt ca theo quyền quản lý ca; sửa phiếu nhập cần PIN chủ quán |
 | Tracking | Cảnh báo kho, báo hết từ cảnh báo, nhập kho, kiểm kê (chênh lệch), mở, chốt ca (chênh lệch két), xem, xuất báo cáo |
 | Accessibility | Trạng thái tồn và chênh lệch két có chữ ("Thiếu", "Thừa"), không chỉ màu; biểu đồ có bảng số liệu thay thế |

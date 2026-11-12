@@ -33,7 +33,7 @@
 | BR-34 | **Mệnh giá gợi ý**: số tiền đúng; mệnh giá tiền Việt Nam nhỏ nhất ≥ tổng; và 2 mệnh giá kế tiếp trong {10.000, 20.000, 50.000, 100.000, 200.000, 500.000} `[giả định]` |
 | BR-35 | **Tiền mặt**: tiền khách đưa ≥ tổng; tiền thối = khách đưa − tổng |
 | BR-36 | **QR động**: chuẩn QR chuyển khoản, chứa tài khoản quán, số tiền = tổng, nội dung = mã đơn 8 ký tự; hiệu lực 10 phút; mỗi đơn tối đa 1 QR còn hiệu lực |
-| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → đơn `THIEU_TIEN`, ghi số đã nhận, báo còn thiếu (MSG-26). Khách không trả tiếp → thu ngân bấm "Huỷ thanh toán" kèm PIN quản lý ca: số đã nhận ghi `tien_du` cần hoàn (`CHO_HOAN`), đơn `DA_HUY`, không cấp số thứ tự, không trừ kho `[giả định]` |
+| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → đơn `THIEU_TIEN`, ghi số đã nhận, báo còn thiếu (MSG-26). Khách không trả tiếp → thu ngân bấm "Huỷ thanh toán" kèm PIN quản lý ca: số đã nhận ghi `tien_du` cần hoàn (`CHO_HOAN`), đơn `DA_HUY`, không cấp số thứ tự, không trừ kho |
 | BR-38 | **Chờ xác nhận** quá 2 phút → hiện MSG-25 với "Kiểm tra lại" (gọi tra cứu giao dịch) và "Đổi sang tiền mặt". Không có thao tác đánh dấu QR thủ công |
 | BR-39 | **Đổi phương thức** khi đang chờ QR: huỷ QR; nếu sau đó vẫn nhận tiền QR của đơn → ghi `tien_du` cần hoàn, báo quản lý ca |
 | BR-40 | **Khi `DA_THANH_TOAN`** (một giao dịch duy nhất): cấp số thứ tự kế tiếp trong ngày; ghi `paid_at`; đẩy sang màn pha chế (TN03); trừ kho theo công thức (TN05); gửi lệnh in |
@@ -99,6 +99,31 @@ flowchart TD
   N -->|Có| O["Về SCR-P01 sau 3 giây"]
   N1 --> O
 ```
+
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Thu ngân | Ở **SCR-P03**, chọn Tiền mặt |
+| 2 | Hệ thống | Hiện mệnh giá gợi ý (BR-34) |
+| 3 | Thu ngân | Chạm mệnh giá hoặc nhập số tiền khách đưa |
+| 4 | Hệ thống | Tiền đưa ≥ tổng → hiện tiền thối cỡ lớn (BR-35) |
+| 5 | Thu ngân | Bấm Hoàn tất |
+| 6 | Hệ thống | Gọi \[PaymentCash\] (BR-40): đơn `DA_THANH_TOAN`, cấp số thứ tự, MSG-24 |
+| 7 | Hệ thống | In bill và tem; về **SCR-P01** sau 3 giây |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Đang mất mạng | Lưu trên máy, cấp số thứ tự từ dải ngoại tuyến (BR-42); đồng bộ khi có mạng |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Tiền khách đưa chưa đủ | MSG-23, nút Hoàn tất disabled |
+| E2 | Máy in lỗi hoặc hết giấy | MSG-28, gắn cờ `CHUA_IN`; đơn vẫn hoàn tất |
 
 ### UC-13 Thanh toán QR
 
@@ -180,6 +205,27 @@ flowchart TD
   G -->|Có| I["Bỏ cờ CHUA_IN"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Thu ngân | Mở **SCR-P04** Đơn trong ca, chọn đơn |
+| 2 | Thu ngân | Chọn in lại Bill |
+| 3 | Hệ thống | In bill kèm ghi chú "In lại lần n" |
+| 4 | Hệ thống | Bỏ cờ `CHUA_IN` nếu có |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Chọn in lại Tem | Chọn một ly hoặc tất cả, rồi in tem |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Máy in lỗi hoặc hết giấy | MSG-28; giữ cờ `CHUA_IN` |
+
 ### UC-15 Huỷ đơn và hoàn tiền
 
 | **Mục** | **Nội dung** |
@@ -205,6 +251,33 @@ flowchart TD
   G --> M["Kho: hoàn ly chưa làm, hao hụt ly đã làm BR-45"]
   G --> N["Ghi nhật ký huỷ"]
 ```
+
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Thu ngân | **SCR-P04** → chọn đơn → Huỷ đơn |
+| 2 | Quản lý ca | Nhập PIN ở **SCR-P05** |
+| 3 | Thu ngân | Chọn lý do, ghi chú |
+| 4 | Hệ thống | MSG-31 xác nhận số tiền hoàn |
+| 5 | Thu ngân | Xác nhận |
+| 6 | Hệ thống | Gọi \[OrderCancel\]: đơn `DA_HUY`, ghi nhật ký huỷ |
+| 7 | Hệ thống | Đơn trả tiền mặt → trả lại khách, ghi giảm két |
+| 8 | Hệ thống | Màn pha chế hiện "ĐÃ HUỶ" (SRS TN03); kho hoàn ly chưa làm, ghi hao hụt ly đã làm (BR-45) |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Đơn trả bằng QR | Tạo yêu cầu hoàn `CHO_HOAN`, MSG-32; quản lý chuyển khoản lại rồi bấm Đã hoàn |
+| A2 | Đơn `THIEU_TIEN`, khách không trả tiếp | Thu ngân bấm Huỷ thanh toán kèm PIN quản lý ca; số đã nhận thành `tien_du` cần hoàn; đơn `DA_HUY` (BR-37) |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Đơn đã giao quá 30 phút | MSG-30, không huỷ được |
+| E2 | PIN sai hoặc không đủ quyền | MSG-12 (SRS TN02) |
 
 ## 6. Điểm vào
 
@@ -294,7 +367,7 @@ sequenceDiagram
   end
 ```
 
-**Map lỗi → thông báo** `[giả định]`
+**Map lỗi → thông báo**
 
 | **Nhóm lỗi** | **Message** |
 | --- | --- |

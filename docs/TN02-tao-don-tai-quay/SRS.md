@@ -156,6 +156,32 @@ flowchart TD
   A --> P["Xoá đơn"] --> Q["MSG-13 xác nhận"] --> R["DA_BO"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Thu ngân | Chạm một dòng trong giỏ ở **SCR-P01** |
+| 2 | Hệ thống | Mở **SCR-P02** với tuỳ chọn hiện tại |
+| 3 | Thu ngân | Sửa tuỳ chọn, bấm Lưu |
+| 4 | Hệ thống | Cập nhật dòng, gộp với dòng giống hệt nếu có (BR-15); tính lại tổng |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Nhân bản dòng | Tạo dòng giống hệt, mở **SCR-P02** để sửa |
+| A2 | Bấm + hoặc − | Cập nhật số lượng; về 0 → MSG-11 hỏi xoá dòng |
+| A3 | Vuốt trái | Xoá dòng, có Hoàn tác 5 giây |
+| A4 | Dòng `CAN_DOI` | Nút Đổi mở **SCR-P02**, hoặc Xoá |
+| A5 | Giảm giá đơn | Nhập % hoặc số tiền và lý do; > 20% hoặc > 50.000 ₫ → cần PIN quản lý ca |
+| A6 | Xoá đơn | MSG-13 hỏi xác nhận → đơn `DA_BO` |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | PIN duyệt giảm giá sai hoặc không đủ quyền | MSG-12, không áp dụng giảm giá |
+
 ### UC-07 Giữ đơn và mở lại
 
 | **Mục** | **Nội dung** |
@@ -182,12 +208,39 @@ flowchart TD
   K -->|Không| L["Tiếp tục nhập"]
 ```
 
+**Luồng chính**
+
+| **Bước** | **Actor** | **Mô tả** |
+| --- | --- | --- |
+| 1 | Thu ngân | Bấm Giữ đơn |
+| 2 | Thu ngân | Nhập tên gợi nhớ (tuỳ chọn) |
+| 3 | Hệ thống | Gọi \[OrderHold\]: đơn `TAM_GIU`, lưu trên máy và máy chủ |
+| 4 | Hệ thống | Giỏ trống, badge Đơn giữ +1 |
+| 5 | Thu ngân | Khi khách quay lại: mở **SCR-P04** Đơn giữ, chọn đơn |
+| 6 | Hệ thống | Đơn về `DANG_TAO`, tiếp tục nhập |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Mở đơn giữ khi giỏ hiện tại đang có món | MSG-15: giữ đơn hiện tại trước, hoặc huỷ thao tác |
+| A2 | Đơn giữ có dòng đã hết món | Dòng đó thành `CAN_DOI` (BR-18) |
+| A3 | Giá menu đã đổi sau khi giữ | Giữ giá lúc giữ, ghi chú MSG-16 |
+
+**Luồng lỗi**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| E1 | Đã có 5 đơn giữ | MSG-14, không giữ thêm |
+
 ### UC-08 Sang thanh toán
 
 | **Mục** | **Nội dung** |
 | --- | --- |
 | Tiền điều kiện | Ca đang mở; đơn `DANG_TAO` có ít nhất 1 dòng |
 | Hậu điều kiện | Đơn `CHO_THANH_TOAN`, tổng đơn bị khoá; mở màn thanh toán (SRS TN04) |
+
+**Luồng chính**
 
 | **Bước** | **Actor** | **Mô tả** |
 | --- | --- | --- |
@@ -275,7 +328,7 @@ sequenceDiagram
   P->>T: SCR-P03, TN04
 ```
 
-**Map lỗi → thông báo** `[giả định]`
+**Map lỗi → thông báo**
 
 | **Nhóm lỗi** | **Message** |
 | --- | --- |
@@ -309,5 +362,7 @@ MSG-07 dùng lại từ SRS TN01. Bản EN: `[chờ bổ sung]`.
 | Offline | Nhập đơn, giữ đơn chạy được khi mất mạng; đồng bộ khi có mạng |
 | Độ bền | Giỏ hàng không mất khi app bị tắt, máy khởi động lại |
 | Công thái học | Vùng chạm ≥ 48 px; nút chính ở tầm tay phải; chữ giá ≥ 18 px |
+| Bảo mật | POS đăng nhập theo từng nhân viên; giảm giá trên 20% cần PIN quản lý ca; PIN không hiện rõ khi nhập |
+| Log / audit | Mỗi đơn: nhân viên tạo, giảm giá (mức, lý do, người duyệt), xoá dòng, bỏ đơn, giữ đơn, kèm thời điểm |
 | Tracking | Thời gian nhập đơn, số chạm mỗi ly, thêm nhanh, sửa dòng, nhân bản, giảm giá (mức, lý do, có PIN), giữ đơn, bỏ đơn |
 | Accessibility | Trạng thái Hết có chữ, không chỉ mờ; tuỳ chọn khác mặc định in đậm kèm dấu "•" |
