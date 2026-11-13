@@ -13,7 +13,6 @@
 | Phạm vi | Màn thanh toán, tiền mặt, QR động, xác nhận, số thứ tự, in, in lại, huỷ, hoàn tiền, thanh toán ngoại tuyến |
 | Ngoài phạm vi | Quẹt thẻ, ví điện tử, chia hoá đơn, nhiều phương thức một đơn (trừ bù phần QR thiếu bằng tiền mặt, BR-37), VAT, tip |
 | Nền tảng | POS, Màn khách, máy in nhiệt kết nối POS `[giả định]` |
-| Figma | `[chưa có]` |
 
 ## 2. User Story
 
@@ -398,7 +397,7 @@ sequenceDiagram
 | MSG-33 | Banner POS | Có {n} đơn ngoại tuyến chưa đồng bộ |
 | MSG-34 | Toast | Đã đồng bộ {n} đơn ngoại tuyến |
 
-MSG-12 dùng lại từ SRS TN02. Bản EN: `[chờ bổ sung]`.
+MSG-12 dùng lại từ SRS TN02.
 
 ## 10. Yêu cầu phi chức năng
 

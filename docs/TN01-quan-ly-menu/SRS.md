@@ -13,7 +13,6 @@
 | Phạm vi | Danh mục, món, size, nhóm tuỳ chọn, công thức, bật tắt bán, đổi giá, ẩn, xoá, đồng bộ |
 | Ngoài phạm vi | Combo, giá theo giờ, menu nhiều chi nhánh, nhập từ file |
 | Nền tảng | Web quản lý; POS (bật tắt bán) `[giả định]` |
-| Figma | `[chưa có]` |
 
 ## 2. User Story
 
@@ -345,8 +344,6 @@ sequenceDiagram
 | MSG-06 | Inline | Ảnh cần là JPG hoặc PNG, tối đa 2 MB |
 | MSG-07 | Inline giỏ POS | {Món / tuỳ chọn} vừa hết. Vui lòng đổi món hoặc bỏ khỏi đơn |
 | MSG-08 | Popup | Món đang có trong đơn chưa hoàn tất nên chưa thể xoá. Bạn có thể ẩn món. \[Ẩn món\] \[Huỷ\] |
-
-Bản EN: `[chờ bổ sung]`.
 
 ## 10. Yêu cầu phi chức năng
 
