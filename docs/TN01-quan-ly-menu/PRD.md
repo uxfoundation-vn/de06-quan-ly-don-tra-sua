@@ -180,9 +180,9 @@ AC03: Món đã xoá hoặc ẩn vẫn hiện đúng tên, giá trong báo cáo 
 
 ## 10. Câu hỏi mở
 
-> Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
+> Mọi câu hỏi dưới đây đã được PO chốt ngày 13/11/2026; quyết định ghi sau mỗi câu và đã cập nhật vào SRS.
 
-- Thu ngân có được báo hết món không, hay chỉ quản lý ca?
+- Thu ngân có được báo hết món không, hay chỉ quản lý ca? → **Đã chốt:** Không. Chỉ quản lý ca và chủ quán (SRS BR-08).
 - Có cần giá khác nhau cho từng mức đá, đường (ví dụ "Không đường" giảm giá)? → **Đã chốt:** Không. Mức đá, mức đường không cộng giá.
-- Số topping tối đa là 3 hay cho mỗi món tự cấu hình?
-- Hết món có tự bật lại mỗi đầu ca không?
+- Số topping tối đa là 3 hay cho mỗi món tự cấu hình? → **Đã chốt:** Mỗi nhóm tuỳ chọn tự cấu hình min, max (SRS BR-04).
+- Hết món có tự bật lại mỗi đầu ca không? → **Đã chốt:** Chỉ tự bật lại khi mở ca đầu tiên của ngày (SRS BR-07).

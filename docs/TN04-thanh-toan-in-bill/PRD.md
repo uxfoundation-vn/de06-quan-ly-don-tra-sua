@@ -188,9 +188,9 @@ AC04: Không huỷ được đơn đã giao quá 30 phút.
 
 ## 10. Câu hỏi mở
 
-> Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
+> Mọi câu hỏi dưới đây đã được PO chốt ngày 13/11/2026; quyết định ghi sau mỗi câu và đã cập nhật vào SRS.
 
-- Khi mất mạng có cho QR tĩnh và quản lý xác nhận thủ công không?
-- Hoàn tiền QR làm trong app hay ngoài app ngân hàng?
-- Có cần màn khách riêng để hiện QR, hay xoay POS?
+- Khi mất mạng có cho QR tĩnh và quản lý xác nhận thủ công không? → **Đã chốt:** Không. Ngoại tuyến chỉ nhận tiền mặt (SRS BR-42).
+- Hoàn tiền QR làm trong app hay ngoài app ngân hàng? → **Đã chốt:** Ngoài app: quản lý ca chuyển khoản qua ngân hàng rồi bấm "Đã hoàn" (SRS BR-44).
+- Có cần màn khách riêng để hiện QR, hay xoay POS? → **Đã chốt:** QR hiện trên tablet màn khách và trên POS.
 - Có cần in bill tuỳ chọn (khách không cần thì không in)? → **Đã chốt:** Có. Công tắc "In bill" trên màn thanh toán, tem ly luôn in (SRS BR-41).

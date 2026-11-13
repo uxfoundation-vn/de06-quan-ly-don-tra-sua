@@ -212,9 +212,9 @@ AC02: Số thứ tự cấp khi thanh toán thành công (TN04), in trên bill.
 
 ## 10. Câu hỏi mở
 
-> Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
+> Mọi câu hỏi dưới đây đã được PO chốt ngày 13/11/2026; quyết định ghi sau mỗi câu và đã cập nhật vào SRS.
 
-- Có cấp số thứ tự ngay khi bắt đầu đơn thay vì khi thanh toán?
+- Có cấp số thứ tự ngay khi bắt đầu đơn thay vì khi thanh toán? → **Đã chốt:** Không. Cấp khi thanh toán xong (SRS TN04 BR-40).
 - Có cần nhập tên khách để gọi tên thay vì số? → **Đã chốt:** Có ô tên khách tuỳ chọn; màn khách và tem hiển thị cả số và tên (SRS BR-59).
-- Giảm giá có cần cho từng ly, không chỉ cả đơn?
+- Giảm giá có cần cho từng ly, không chỉ cả đơn? → **Đã chốt:** Không. Chỉ giảm giá cả đơn (SRS BR-19).
 - Đơn giữ có cần chuyển sang máy POS khác? → **Đã chốt:** Có. Mọi POS trong ca thấy và mở được đơn giữ của nhau (SRS BR-20).

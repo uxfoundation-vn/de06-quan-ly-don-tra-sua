@@ -206,9 +206,9 @@ AC04: Chọn khoảng ngày; xuất CSV.
 
 ## 10. Câu hỏi mở
 
-> Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
+> Mọi câu hỏi dưới đây đã được PO chốt ngày 13/11/2026; quyết định ghi sau mỗi câu và đã cập nhật vào SRS.
 
-- Có cho nhiều ca chồng nhau (2 thu ngân, 2 két) không?
-- Tồn âm có chặn bán món không?
-- Ngưỡng chênh lệch két 50.000 ₫ có phù hợp?
-- Báo cáo có cần giá vốn ngay ở MVP?
+- Có cho nhiều ca chồng nhau (2 thu ngân, 2 két) không? → **Đã chốt:** Không. Mỗi quán tối đa 1 ca mở (SRS BR-54).
+- Tồn âm có chặn bán món không? → **Đã chốt:** Không chặn; chỉ cảnh báo trạng thái Âm (SRS BR-49, BR-51).
+- Ngưỡng chênh lệch két 50.000 ₫ có phù hợp? → **Đã chốt:** Giữ 50.000 ₫ (SRS BR-56).
+- Báo cáo có cần giá vốn ngay ở MVP? → **Đã chốt:** Không ở MVP.
