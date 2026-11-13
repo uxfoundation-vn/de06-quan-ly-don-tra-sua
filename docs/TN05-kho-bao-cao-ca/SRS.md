@@ -13,7 +13,6 @@
 | Phạm vi | Nguyên liệu, trừ và hoàn kho, cảnh báo, nhập kho, hao hụt, kiểm kê, mở ca, chốt ca, báo cáo |
 | Ngoài phạm vi | Nhà cung cấp, đặt hàng tự động, giá vốn, lô và hạn dùng, nhiều chi nhánh |
 | Nền tảng | Web quản lý; POS (mở, chốt ca, nhập kho nhanh) `[giả định]` |
-| Figma | `[chưa có]` |
 
 ## 2. User Story
 
@@ -401,7 +400,7 @@ sequenceDiagram
 | MSG-43 | Inline | Chênh lệch trên 50.000 ₫. Vui lòng ghi lý do và nhập PIN quản lý ca |
 | MSG-44 | Banner Web | {n} món đang thiếu công thức, kho có thể chưa chính xác. \[Xem món\] |
 
-MSG-33 dùng lại từ SRS TN04. Bản EN: `[chờ bổ sung]`.
+MSG-33 dùng lại từ SRS TN04.
 
 ## 10. Yêu cầu phi chức năng
 

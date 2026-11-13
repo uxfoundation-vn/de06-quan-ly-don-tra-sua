@@ -13,7 +13,6 @@
 | Phạm vi | Hàng đợi, thẻ đơn, đánh dấu ly, ngưỡng trễ, Sẵn sàng, gọi khách, Đã giao, đơn bị huỷ, mất kết nối |
 | Ngoài phạm vi | Nhiều trạm, hướng dẫn công thức, ưu tiên thủ công, gọi qua tin nhắn |
 | Nền tảng | Màn pha chế (tablet dọc hoặc ngang), Màn khách (tablet) |
-| Figma | `[chưa có]` |
 
 ## 2. User Story
 
@@ -297,8 +296,6 @@ sequenceDiagram
 | MSG-20 | Overlay thẻ | ĐÃ HUỶ · Đã làm {n} ly, vui lòng báo quản lý ca |
 | MSG-21 | Overlay thẻ | ĐÃ HUỶ · Dừng pha chế đơn này |
 | MSG-22 | **SCR-K02** | Vui lòng nhận ly khi số của bạn hiện ở cột "Mời nhận" |
-
-Bản EN: `[chờ bổ sung]`.
 
 ## 10. Yêu cầu phi chức năng
 

@@ -13,7 +13,6 @@
 | Phạm vi | Màn bán hàng, tìm món, thêm nhanh, màn tuỳ chọn, giỏ hàng, giảm giá đơn, giữ đơn, hình thức, sang thanh toán |
 | Ngoài phạm vi | Khách tự đặt, tích điểm, mã khuyến mãi, chia gộp đơn, giao hàng |
 | Nền tảng | POS (tablet ngang) `[giả định]` |
-| Figma | `[chưa có]` |
 
 ## 2. User Story
 
@@ -356,7 +355,7 @@ sequenceDiagram
 | MSG-16 | Inline giỏ | Giá menu đã thay đổi. Đơn giữ áp dụng giá lúc giữ |
 | MSG-45 | Toast | Đơn "{tên gợi nhớ}" đang được mở ở {tên máy}. Vui lòng thử lại sau |
 
-MSG-07 dùng lại từ SRS TN01. Bản EN: `[chờ bổ sung]`.
+MSG-07 dùng lại từ SRS TN01.
 
 ## 10. Yêu cầu phi chức năng
 
