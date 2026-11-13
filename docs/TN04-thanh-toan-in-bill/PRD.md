@@ -49,7 +49,7 @@ Sau khi nhập đơn ([TN02](../TN02-tao-don-tai-quay/PRD.md)), thu ngân thu ti
 ### 3.2 Ngoài phạm vi
 
 - Quẹt thẻ ngân hàng, ví điện tử khác → phase sau.
-- Chia hoá đơn, thanh toán nhiều phương thức cho một đơn.
+- Chia hoá đơn, thanh toán nhiều phương thức cho một đơn. Ngoại lệ duy nhất: khách chuyển khoản thiếu được bù phần còn thiếu bằng tiền mặt.
 - Hoá đơn điện tử VAT.
 - Tiền tip.
 
@@ -79,7 +79,7 @@ Huỷ đơn đã thanh toán cần PIN quản lý ca và lý do; mọi lần hu�
 | QR động | Chứa số tiền và mã đơn; hết hạn sau 10 phút |
 | Xác nhận QR | Đúng mã đơn và số tiền ≥ tổng; chuyển dư → ghi nhận dư để hoàn |
 | Không nhận được xác nhận | Sau 2 phút, gợi ý kiểm tra lại hoặc đổi sang tiền mặt |
-| Số thứ tự | Cấp khi thanh toán thành công; tăng dần trong ngày |
+| Số thứ tự | Cấp khi thanh toán thành công; tăng dần, bắt đầu lại từ 1 khi mở ca đầu tiên của ngày |
 | Huỷ đơn đã thanh toán | Cần PIN quản lý ca, lý do; hoàn tiền theo phương thức đã trả |
 | Không huỷ được | Đơn Đã giao quá 30 phút |
 | In | Bill 1 bản cho khách; mỗi ly 1 tem |
@@ -139,7 +139,7 @@ AC03: Nhận xác nhận đúng mã đơn, đủ số tiền → tự chuyển �
 
 AC04: Sau 2 phút chưa có xác nhận → gợi ý "Kiểm tra lại" hoặc "Đổi sang tiền mặt"; không cho đánh dấu đã thanh toán bằng tay.
 
-AC05: Khách chuyển dư → ghi nhận, báo thu ngân để hoàn phần dư; chuyển thiếu → báo số còn thiếu.
+AC05: Khách chuyển dư → ghi nhận, báo thu ngân để hoàn phần dư; chuyển thiếu → báo số còn thiếu; khách chuyển thêm hoặc bù phần thiếu bằng tiền mặt.
 
 AC06: QR hết hạn sau 10 phút → tạo QR mới.
 
@@ -187,6 +187,8 @@ AC04: Không huỷ được đơn đã giao quá 30 phút.
 | Huỷ để rút tiền | Nhân viên huỷ đơn tiền mặt rồi giữ tiền | PIN quản lý, nhật ký, báo cáo huỷ theo người (TN05) |
 
 ## 10. Câu hỏi mở
+
+> Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
 
 - Khi mất mạng có cho QR tĩnh và quản lý xác nhận thủ công không?
 - Hoàn tiền QR làm trong app hay ngoài app ngân hàng?

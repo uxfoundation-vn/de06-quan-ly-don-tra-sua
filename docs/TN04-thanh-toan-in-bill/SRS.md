@@ -11,7 +11,7 @@
 | Mục tiêu | Thu tiền mặt hoặc QR, xác nhận tự động, cấp số thứ tự, đẩy đơn sang pha chế, in bill và tem; huỷ và hoàn tiền có kiểm soát |
 | Actor | Thu ngân · Quản lý ca · Khách · POS · Màn khách · Máy in · Máy chủ · Đối tác xác nhận chuyển khoản |
 | Phạm vi | Màn thanh toán, tiền mặt, QR động, xác nhận, số thứ tự, in, in lại, huỷ, hoàn tiền, thanh toán ngoại tuyến |
-| Ngoài phạm vi | Quẹt thẻ, ví điện tử, chia hoá đơn, nhiều phương thức một đơn, VAT, tip |
+| Ngoài phạm vi | Quẹt thẻ, ví điện tử, chia hoá đơn, nhiều phương thức một đơn (trừ bù phần QR thiếu bằng tiền mặt, BR-37), VAT, tip |
 | Nền tảng | POS, Màn khách, máy in nhiệt kết nối POS `[giả định]` |
 | Figma | `[chưa có]` |
 
@@ -33,13 +33,13 @@
 | BR-34 | **Mệnh giá gợi ý**: số tiền đúng; mệnh giá tiền Việt Nam nhỏ nhất ≥ tổng; và 2 mệnh giá kế tiếp trong {10.000, 20.000, 50.000, 100.000, 200.000, 500.000} `[giả định]` |
 | BR-35 | **Tiền mặt**: tiền khách đưa ≥ tổng; tiền thối = khách đưa − tổng |
 | BR-36 | **QR động**: chuẩn QR chuyển khoản, chứa tài khoản quán, số tiền = tổng, nội dung = mã đơn 8 ký tự; hiệu lực 10 phút; mỗi đơn tối đa 1 QR còn hiệu lực |
-| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → đơn `THIEU_TIEN`, ghi số đã nhận, báo còn thiếu (MSG-26). Khách không trả tiếp → thu ngân bấm "Huỷ thanh toán" kèm PIN quản lý ca: số đã nhận ghi `tien_du` cần hoàn (`CHO_HOAN`), đơn `DA_HUY`, không cấp số thứ tự, không trừ kho |
+| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → đơn `THIEU_TIEN`, ghi số đã nhận, báo còn thiếu (MSG-26); khách chuyển thêm bằng QR mới cho số còn thiếu, hoặc bù bằng tiền mặt. Đây là ngoại lệ duy nhất của quy tắc một phương thức mỗi đơn `[giả định]`: đơn ghi hai dòng thanh toán, phần đã chuyển tính vào doanh thu QR, phần bù tính vào thu tiền mặt của ca (BR-56). Đủ tổng → `DA_THANH_TOAN`. Khách không trả tiếp → thu ngân bấm "Huỷ thanh toán" kèm PIN quản lý ca: số đã nhận ghi `tien_du` cần hoàn (`CHO_HOAN`), đơn `DA_HUY`, không cấp số thứ tự, không trừ kho |
 | BR-38 | **Chờ xác nhận** quá 2 phút → hiện MSG-25 với "Kiểm tra lại" (gọi tra cứu giao dịch) và "Đổi sang tiền mặt". Không có thao tác đánh dấu QR thủ công |
 | BR-39 | **Đổi phương thức** khi đang chờ QR: huỷ QR; nếu sau đó vẫn nhận tiền QR của đơn → ghi `tien_du` cần hoàn, báo quản lý ca |
-| BR-40 | **Khi `DA_THANH_TOAN`** (một giao dịch duy nhất): cấp số thứ tự kế tiếp trong ngày; ghi `paid_at`; đẩy sang màn pha chế (TN03); trừ kho theo công thức (TN05); gửi lệnh in |
+| BR-40 | **Khi `DA_THANH_TOAN`**, các việc sau chạy trong một giao dịch dữ liệu duy nhất (thành công cả hoặc không ghi gì), không liên quan tới số lần khách trả tiền: cấp số thứ tự kế tiếp; số thứ tự bắt đầu lại từ 1 khi mở ca đầu tiên của ngày, không bắt đầu lại lúc 00:00, nên ca mở qua 00:00 dùng tiếp dãy số đang chạy (TN05 BR-54); ghi `paid_at`; đẩy sang màn pha chế (TN03); trừ kho theo công thức (TN05); gửi lệnh in |
 | BR-41 | **In**: 1 bill + 1 tem mỗi ly. Lỗi in không chặn hoàn tất; đơn có cờ `CHUA_IN`; in lại từ **SCR-P04** |
 | BR-42 | **Ngoại tuyến**: chỉ cho Tiền mặt; số thứ tự cấp trên máy theo dải riêng của máy (ví dụ máy 2: 2001…) để không trùng `[giả định]`; đơn lưu máy, đồng bộ khi có mạng; tem in ở POS thay cho màn pha chế |
-| BR-43 | **Huỷ đơn đã thanh toán**: cần PIN quản lý ca (BR-08), lý do (Khách đổi ý, Làm sai món, Hết nguyên liệu, Khác + ghi chú). Không huỷ được khi `DA_GIAO` quá 30 phút `[giả định]` |
+| BR-43 | **Huỷ đơn đã thanh toán**: cần PIN quản lý ca (BR-08), lý do (Khách đổi ý, Làm sai món, Hết nguyên liệu, Khác + ghi chú). Không huỷ được khi `DA_GIAO` quá 30 phút `[giả định]`. Đơn thuộc **ca đã chốt** mà còn trong 30 phút: vẫn huỷ được nhưng phải có ca `DANG_MO`; khoản huỷ và hoàn tiền ghi vào ca đang mở ở mục "Huỷ đơn của ca trước", báo cáo của ca đã chốt không đổi (TN05 BR-57) |
 | BR-44 | **Hoàn tiền**: tiền mặt → POS hiện số tiền trả lại, ghi giảm két; QR → tạo yêu cầu hoàn `CHO_HOAN`, quản lý ca chuyển khoản ngoài hệ thống rồi bấm "Đã hoàn" |
 | BR-45 | **Hoàn kho khi huỷ**: ly chưa `XONG` → hoàn nguyên liệu; ly đã `XONG` → ghi hao hụt (TN05). Mọi lần huỷ ghi nhật ký: đơn, người huỷ, người duyệt, lý do, số tiền |
 
@@ -173,7 +173,7 @@ flowchart TD
 | **Mã** | **Điều kiện** | **Xử lý** |
 | --- | --- | --- |
 | A1 | Khách chuyển dư | `tien_du`; MSG-29 cho thu ngân; tạo yêu cầu hoàn `CHO_HOAN` |
-| A2 | Khách chuyển thiếu | `THIEU_TIEN`; MSG-26; khách chuyển thêm (QR mới với số còn thiếu) hoặc trả tiền mặt phần còn lại |
+| A2 | Khách chuyển thiếu | `THIEU_TIEN`; MSG-26; khách chuyển thêm (QR mới với số còn thiếu) hoặc bù tiền mặt phần còn lại, ghi thành dòng thanh toán thứ hai (BR-37) |
 | A3 | Quá 2 phút | MSG-25 (BR-38) |
 | A4 | Đổi sang tiền mặt | Huỷ QR (BR-39) |
 | A5 | QR hết hạn | Tạo QR mới, QR cũ bị vô hiệu |

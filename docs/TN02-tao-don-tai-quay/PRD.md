@@ -212,6 +212,8 @@ AC02: Số thứ tự cấp khi thanh toán thành công (TN04), in trên bill.
 
 ## 10. Câu hỏi mở
 
+> Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
+
 - Có cấp số thứ tự ngay khi bắt đầu đơn thay vì khi thanh toán?
 - Có cần nhập tên khách để gọi tên thay vì số?
 - Giảm giá có cần cho từng ly, không chỉ cả đơn?

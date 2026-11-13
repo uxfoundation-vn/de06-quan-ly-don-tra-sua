@@ -37,10 +37,10 @@
 | BR-51 | **Cảnh báo** khi chuyển sang `SAP_HET`, `HET` hoặc `AM`: banner Web, thông báo POS quản lý ca; mỗi nguyên liệu một lần mỗi trạng thái mỗi ngày. `HET` kèm gợi ý báo hết các món dùng nguyên liệu (UC-03 của TN01) |
 | BR-52 | **Phiếu nhập**: ≥ 1 dòng; số lượng > 0 theo đơn vị mua; quy đổi theo BR-46; biến động `NHAP`. Sửa phiếu chỉ trong ngày tạo và cần PIN chủ quán |
 | BR-53 | **Kiểm kê**: nhập số đếm thực tế; chênh lệch = đếm − tồn hệ thống; xác nhận → biến động `KIEM_KE` bằng chênh lệch. **Hao hụt thủ công**: số lượng, lý do (Đổ vỡ, Hỏng, Khác) → `HAO_HUT` |
-| BR-54 | **Ca**: mỗi quán tối đa 1 ca `DANG_MO`. Mở ca cần tiền đầu ca (≥ 0). Mở ca → chạy tự bật lại `HET_MON`, `HET` (BR-07) |
-| BR-55 | **Điều kiện chốt ca**: không còn đơn `TAM_GIU`, `CHO_THANH_TOAN`, `CHO_QR`, `THIEU_TIEN`; không còn đơn ngoại tuyến chưa đồng bộ |
-| BR-56 | **Tiền mặt dự kiến** = tiền đầu ca + thu tiền mặt − tiền thối đã tính trong thu tiền mặt (ghi theo số tổng đơn) − hoàn tiền mặt. **Chênh lệch** = đếm thực tế − dự kiến. \|Chênh lệch\| > 50.000 ₫ → bắt buộc lý do và PIN quản lý ca `[giả định]` |
-| BR-57 | **Báo cáo ca**: doanh thu theo phương thức, số đơn, số ly, giảm giá, đơn huỷ (số, tiền, người duyệt), tiền dư QR chờ hoàn, chênh lệch két. Lưu bản chụp, không đổi sau khi chốt |
+| BR-54 | **Ca**: mỗi quán tối đa 1 ca `DANG_MO`. Mở ca cần tiền đầu ca (≥ 0). Mở **ca đầu tiên của ngày** → chạy tự bật lại `HET_MON`, `HET` (BR-07) và đưa số thứ tự đơn về 1 (BR-40); ca sau trong cùng ngày không làm hai việc này. **Ca mở qua 00:00**: POS hiện MSG-42 lúc 00:00 và nhắc lại mỗi lần đăng nhập cho tới khi chốt; ca vẫn bán được, số thứ tự chạy tiếp, đơn tính vào ca đang mở và vào ngày theo `paid_at` ở báo cáo ngày (BR-58) |
+| BR-55 | **Điều kiện chốt ca**: không còn đơn `TAM_GIU`, `CHO_THANH_TOAN`, `CHO_QR`, `THIEU_TIEN`; không còn đơn đã thanh toán chưa `DA_GIAO` (`DA_THANH_TOAN`, `DANG_PHA_CHE`, `SAN_SANG`), phải giao hoặc huỷ trước; không còn đơn ngoại tuyến chưa đồng bộ. Yêu cầu hoàn `CHO_HOAN` **không chặn** chốt ca: được liệt kê ở mục "tiền dư QR chờ hoàn" của báo cáo ca (BR-57) và chuyển sang ca sau theo dõi cho tới khi `DA_HOAN` |
+| BR-56 | **Tiền mặt dự kiến** = tiền đầu ca + thu tiền mặt − hoàn tiền mặt. "Thu tiền mặt" ghi theo tổng đơn (không theo số tiền khách đưa), nên tiền thối không trừ thêm lần nữa; gồm cả phần bù tiền mặt của đơn QR thiếu (BR-37). "Hoàn tiền mặt" gồm cả hoàn cho đơn của ca trước bị huỷ trong ca này (BR-43). **Chênh lệch** = đếm thực tế − dự kiến. \|Chênh lệch\| > 50.000 ₫ → bắt buộc lý do và PIN quản lý ca `[giả định]` |
+| BR-57 | **Báo cáo ca**: doanh thu theo phương thức, số đơn, số ly, giảm giá, đơn huỷ (số, tiền, người duyệt), tiền dư QR chờ hoàn, chênh lệch két. Lưu bản chụp, không đổi sau khi chốt. Đơn của ca đã chốt bị huỷ sau đó (BR-43) được ghi ở mục "Huỷ đơn của ca trước" trong báo cáo của ca thực hiện huỷ; báo cáo ngày (BR-58) cộng mục này nên doanh thu ngày vẫn đúng |
 | BR-58 | **Báo cáo ngày, khoảng ngày**: tổng hợp từ các ca; doanh thu theo giờ; top 10 món, top 5 topping theo số ly; so với cùng ngày tuần trước. Xuất CSV |
 
 ## 4. Trạng thái
@@ -214,8 +214,8 @@ flowchart TD
 ```mermaid
 flowchart TD
   A["POS → Chốt ca, SCR-P06"] --> B{"Điều kiện BR-55"}
-  B -->|Còn đơn giữ, QR chờ| C["MSG-40: danh sách đơn cần xử lý"]
-  C --> C1["Xử lý từng đơn, TN02, TN04"] --> B
+  B -->|Còn đơn giữ, QR chờ, đơn chưa giao| C["MSG-40: danh sách đơn cần xử lý"]
+  C --> C1["Xử lý từng đơn, TN02, TN03, TN04"] --> B
   B -->|Còn đơn ngoại tuyến| D["Đồng bộ trước, MSG-33"] --> B
   B -->|Đủ| E["DANG_CHOT: đếm két theo mệnh giá"]
   E --> F["Tính dự kiến BR-56, hiện chênh lệch"]
@@ -240,6 +240,14 @@ flowchart TD
 | 5 | Quản lý ca | Ghi lý do và PIN nếu cần; bấm "Chốt ca" |
 | 6 | Máy chủ | Ca `DA_CHOT`; lưu báo cáo ca (BR-57) |
 | 7 | POS | In báo cáo ca; về chế độ Mở ca |
+
+**Luồng thay thế**
+
+| **Mã** | **Điều kiện** | **Xử lý** |
+| --- | --- | --- |
+| A1 | Còn đơn đã thanh toán chưa `DA_GIAO` | MSG-40 liệt kê đơn; giao hoặc huỷ (SRS TN03, TN04) rồi kiểm tra lại BR-55 |
+| A2 | Còn yêu cầu hoàn `CHO_HOAN` | Không chặn; hiện danh sách để quản lý ca biết, ghi vào báo cáo ca và chuyển sang ca sau (BR-55) |
+| A3 | Ca còn mở khi qua 00:00 | POS hiện MSG-42 lúc 00:00 và mỗi lần đăng nhập; chạm thông báo mở **SCR-P06** chế độ Chốt ca (BR-54) |
 
 ### UC-20 Xem báo cáo
 
@@ -292,6 +300,7 @@ flowchart TD
 | Cảnh báo kho trên Web, POS | **SCR-W03** lọc nguyên liệu đó | |
 | Đăng nhập POS khi chưa có ca | UC-18, **SCR-P06** | |
 | POS → menu → Chốt ca | UC-19, **SCR-P06** | |
+| Thông báo MSG-42 khi ca mở qua 00:00 | UC-19 (A3), **SCR-P06** | BR-54 |
 | POS → menu → Nhập kho nhanh | UC-17 (nhập kho) | Quản lý ca |
 | Web → trang chủ, Báo cáo | UC-20, **SCR-W04** | |
 

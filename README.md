@@ -1,6 +1,6 @@
 # Đề 6 · Quản lý đơn hàng quán trà sữa
 
-> **Mã:** DE06 · **Độ khó:** 6/8 · **Vai trò:** 3 (thu ngân, pha chế, chủ quán) · **Nền tảng:** Máy POS (tablet) · Màn pha chế (tablet) · Web quản lý `[giả định]`
+> **Mã:** DE06 · **Độ khó:** 6/8 · **Vai trò:** 4 (thu ngân, pha chế, quản lý ca, chủ quán) · **Nền tảng:** Máy POS (tablet) · Màn pha chế (tablet) · Web quản lý `[giả định]`
 
 Hệ thống bán hàng cho một quán trà sữa: thu ngân nhận đơn tại quầy với món có nhiều tuỳ chọn, quầy pha chế nhận đơn ngay trên màn hình, khách thanh toán tiền mặt hoặc QR, kho nguyên liệu tự trừ theo công thức, chủ quán xem báo cáo ca. Đây là đề có **thao tác nhanh dưới áp lực giờ cao điểm** và **dữ liệu chảy qua nhiều màn hình cùng lúc**. Đề gồm 5 tính năng; mỗi tính năng có 1 PRD và 1 SRS riêng.
 
@@ -84,6 +84,7 @@ Giờ cao điểm (trưa, sau giờ tan học) một quầy có thể nhận 60�
 | --- | --- |
 | Thu ngân | Nhập đơn thật nhanh và đúng, thu tiền nhanh, ít bấm |
 | Pha chế | Thấy rõ ly nào làm trước, công thức từng ly, không đọc nhầm |
+| Quản lý ca | Mở và chốt ca, duyệt giảm giá, huỷ đơn và hoàn tiền bằng PIN, báo hết món |
 | Chủ quán | Sửa menu và giá, biết doanh thu, nguyên liệu sắp hết, ca có thiếu tiền không |
 | Khách | Ly đúng món, biết khi nào tới lượt |
 
@@ -93,7 +94,7 @@ Ngoài phạm vi cả đề: nhiều chi nhánh, giao hàng và đặt online, �
 
 - Màn POS mã `SCR-P..`, màn pha chế `SCR-K..`, Web quản lý `SCR-W..`.
 - Tiền tệ VND, không có số lẻ.
-- Mỗi nhân viên đăng nhập POS bằng mã PIN 4 số; quyền theo vai trò: thu ngân, pha chế, chủ quán `[giả định]`.
+- Mỗi nhân viên đăng nhập POS bằng mã PIN 4 số; quyền theo vai trò: thu ngân, pha chế, quản lý ca, chủ quán `[giả định]`. Quản lý ca là thu ngân hoặc pha chế được chủ quán cấp thêm quyền duyệt bằng PIN (giảm giá, huỷ đơn, hoàn tiền, chênh lệch két) và bật tắt hết món (TN01 BR-08); chủ quán có mọi quyền của quản lý ca.
 - Mã BR, MSG, UC đánh số liên tục trong cả đề: TN01 dùng BR-01–10, MSG-01–08; TN02 dùng BR-11–22, MSG-09–16; TN03 dùng BR-23–32, MSG-17–22; TN04 dùng BR-33–45, MSG-23–34; TN05 dùng BR-46–58, MSG-35–44.
 - Giá trị đánh dấu `[giả định]` dùng để dựng flow, cần PO hoặc BA xác nhận trước khi dùng.
 

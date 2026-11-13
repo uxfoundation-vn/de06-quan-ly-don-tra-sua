@@ -186,6 +186,8 @@ AC02: Đơn đã có ly làm xong mà bị huỷ → báo rõ số ly đã làm 
 
 ## 10. Câu hỏi mở
 
+> Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
+
 - Đơn có vào màn pha chế trước khi thanh toán không (khách quen trả sau)?
 - Có cần chia trạm pha chế ngay ở MVP?
 - Màn khách dùng TV riêng hay mặt sau của POS?
