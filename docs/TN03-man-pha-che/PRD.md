@@ -190,5 +190,5 @@ AC02: Đơn đã có ly làm xong mà bị huỷ → báo rõ số ly đã làm 
 
 - Đơn có vào màn pha chế trước khi thanh toán không (khách quen trả sau)?
 - Có cần chia trạm pha chế ngay ở MVP?
-- Màn khách dùng TV riêng hay mặt sau của POS?
+- Màn khách dùng TV riêng hay mặt sau của POS? → **Đã chốt:** Tablet riêng.
 - Tự xác nhận nhận sau 15 phút có hợp lý không?

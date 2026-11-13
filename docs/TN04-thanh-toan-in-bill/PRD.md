@@ -193,4 +193,4 @@ AC04: Không huỷ được đơn đã giao quá 30 phút.
 - Khi mất mạng có cho QR tĩnh và quản lý xác nhận thủ công không?
 - Hoàn tiền QR làm trong app hay ngoài app ngân hàng?
 - Có cần màn khách riêng để hiện QR, hay xoay POS?
-- Có cần in bill tuỳ chọn (khách không cần thì không in)?
+- Có cần in bill tuỳ chọn (khách không cần thì không in)? → **Đã chốt:** Có. Công tắc "In bill" trên màn thanh toán, tem ly luôn in (SRS BR-41).

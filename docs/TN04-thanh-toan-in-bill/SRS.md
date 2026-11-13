@@ -37,7 +37,7 @@
 | BR-38 | **Chờ xác nhận** quá 2 phút → hiện MSG-25 với "Kiểm tra lại" (gọi tra cứu giao dịch) và "Đổi sang tiền mặt". Không có thao tác đánh dấu QR thủ công |
 | BR-39 | **Đổi phương thức** khi đang chờ QR: huỷ QR; nếu sau đó vẫn nhận tiền QR của đơn → ghi `tien_du` cần hoàn, báo quản lý ca |
 | BR-40 | **Khi `DA_THANH_TOAN`**, các việc sau chạy trong một giao dịch dữ liệu duy nhất (thành công cả hoặc không ghi gì), không liên quan tới số lần khách trả tiền: cấp số thứ tự kế tiếp; số thứ tự bắt đầu lại từ 1 khi mở ca đầu tiên của ngày, không bắt đầu lại lúc 00:00, nên ca mở qua 00:00 dùng tiếp dãy số đang chạy (TN05 BR-54); ghi `paid_at`; đẩy sang màn pha chế (TN03); trừ kho theo công thức (TN05); gửi lệnh in |
-| BR-41 | **In**: 1 bill + 1 tem mỗi ly. Lỗi in không chặn hoàn tất; đơn có cờ `CHUA_IN`; in lại từ **SCR-P04** |
+| BR-41 | **In**: tem luôn in, 1 tem mỗi ly. **Bill tuỳ chọn**: công tắc "In bill" ở **SCR-P03**, mặc định bật `[giả định]`; tắt thì không in bill, in lại được sau từ **SCR-P04**. Lỗi in không chặn hoàn tất; đơn có cờ `CHUA_IN`; in lại từ **SCR-P04** |
 | BR-42 | **Ngoại tuyến**: chỉ cho Tiền mặt; số thứ tự cấp trên máy theo dải riêng của máy (ví dụ máy 2: 2001…) để không trùng `[giả định]`; đơn lưu máy, đồng bộ khi có mạng; tem in ở POS thay cho màn pha chế |
 | BR-43 | **Huỷ đơn đã thanh toán**: cần PIN quản lý ca (BR-08), lý do (Khách đổi ý, Làm sai món, Hết nguyên liệu, Khác + ghi chú). Không huỷ được khi `DA_GIAO` quá 30 phút `[giả định]`. Đơn thuộc **ca đã chốt** mà còn trong 30 phút: vẫn huỷ được nhưng phải có ca `DANG_MO`; khoản huỷ và hoàn tiền ghi vào ca đang mở ở mục "Huỷ đơn của ca trước", báo cáo của ca đã chốt không đổi (TN05 BR-57) |
 | BR-44 | **Hoàn tiền**: tiền mặt → POS hiện số tiền trả lại, ghi giảm két; QR → tạo yêu cầu hoàn `CHO_HOAN`, quản lý ca chuyển khoản ngoài hệ thống rồi bấm "Đã hoàn" |
@@ -301,6 +301,7 @@ flowchart TD
 | 5 | QR | Panel | Mã QR, số tiền, mã đơn, đồng hồ 10 phút, trạng thái "Đang chờ thanh toán"; Kiểm tra lại, Đổi tiền mặt |
 | 6 | Hoàn tất | Button lớn | Chỉ ở Tiền mặt, khi tiền đưa ≥ tổng |
 | 7 | Quay lại sửa | Button text | |
+| 7b | In bill | Toggle | Mặc định bật; tắt thì chỉ in tem (BR-41) |
 | 8 | Màn thành công | Overlay | Số thứ tự (≥ 80 px), tiền thối, trạng thái in; tự đóng 3 giây |
 
 ### SCR-P05 Huỷ đơn & hoàn tiền (POS)
@@ -406,7 +407,7 @@ MSG-12 dùng lại từ SRS TN02. Bản EN: `[chờ bổ sung]`.
 | Hiệu năng | Hoàn tất tiền mặt ≤ 1 giây; xử lý webhook tới POS ≤ 3 giây |
 | Toàn vẹn tiền | Mỗi đơn chỉ chuyển `DA_THANH_TOAN` một lần; webhook idempotent theo transaction_id; đối soát giao dịch ngân hàng với đơn mỗi giờ |
 | Bảo mật | Webhook xác thực chữ ký đối tác; không có API đánh dấu QR thủ công; PIN quản lý không lưu trên POS dạng rõ |
-| Audit | Nhật ký thanh toán, huỷ, hoàn tiền giữ 5 năm `[cần chốt]` |
+| Audit | Nhật ký thanh toán, huỷ, hoàn tiền giữ 5 năm |
 | Offline | Tiền mặt hoạt động khi mất mạng; đồng bộ không mất, không trùng đơn |
 | Tracking | Phương thức, thời gian thanh toán, QR quá 2 phút, thiếu, dư, lỗi in, huỷ (lý do, người duyệt), hoàn tiền |
 | Accessibility | Tiền thối, số thứ tự cỡ lớn; trạng thái QR có chữ và âm báo |

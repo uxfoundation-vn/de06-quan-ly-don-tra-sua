@@ -183,6 +183,6 @@ AC03: Món đã xoá hoặc ẩn vẫn hiện đúng tên, giá trong báo cáo 
 > Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
 
 - Thu ngân có được báo hết món không, hay chỉ quản lý ca?
-- Có cần giá khác nhau cho từng mức đá, đường (ví dụ "Không đường" giảm giá)?
+- Có cần giá khác nhau cho từng mức đá, đường (ví dụ "Không đường" giảm giá)? → **Đã chốt:** Không. Mức đá, mức đường không cộng giá.
 - Số topping tối đa là 3 hay cho mỗi món tự cấu hình?
 - Hết món có tự bật lại mỗi đầu ca không?

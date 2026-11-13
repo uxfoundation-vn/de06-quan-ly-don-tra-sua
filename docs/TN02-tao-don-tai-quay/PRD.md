@@ -215,6 +215,6 @@ AC02: Số thứ tự cấp khi thanh toán thành công (TN04), in trên bill.
 > Câu nào đã có giá trị ở mục 5 thì giá trị đó là **tạm chốt** `[giả định]` để dựng flow. Câu hỏi vẫn để mở cho đến khi PO xác nhận.
 
 - Có cấp số thứ tự ngay khi bắt đầu đơn thay vì khi thanh toán?
-- Có cần nhập tên khách để gọi tên thay vì số?
+- Có cần nhập tên khách để gọi tên thay vì số? → **Đã chốt:** Có ô tên khách tuỳ chọn; màn khách và tem hiển thị cả số và tên (SRS BR-59).
 - Giảm giá có cần cho từng ly, không chỉ cả đơn?
-- Đơn giữ có cần chuyển sang máy POS khác?
+- Đơn giữ có cần chuyển sang máy POS khác? → **Đã chốt:** Có. Mọi POS trong ca thấy và mở được đơn giữ của nhau (SRS BR-20).

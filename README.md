@@ -95,7 +95,7 @@ Ngoài phạm vi cả đề: nhiều chi nhánh, giao hàng và đặt online, �
 - Màn POS mã `SCR-P..`, màn pha chế `SCR-K..`, Web quản lý `SCR-W..`.
 - Tiền tệ VND, không có số lẻ.
 - Mỗi nhân viên đăng nhập POS bằng mã PIN 4 số; quyền theo vai trò: thu ngân, pha chế, quản lý ca, chủ quán `[giả định]`. Quản lý ca là thu ngân hoặc pha chế được chủ quán cấp thêm quyền duyệt bằng PIN (giảm giá, huỷ đơn, hoàn tiền, chênh lệch két) và bật tắt hết món (TN01 BR-08); chủ quán có mọi quyền của quản lý ca.
-- Mã BR, MSG, UC đánh số liên tục trong cả đề: TN01 dùng BR-01–10, MSG-01–08; TN02 dùng BR-11–22, MSG-09–16; TN03 dùng BR-23–32, MSG-17–22; TN04 dùng BR-33–45, MSG-23–34; TN05 dùng BR-46–58, MSG-35–44.
+- Mã BR, MSG, UC đánh số liên tục trong cả đề: TN01 dùng BR-01–10, MSG-01–08; TN02 dùng BR-11–22, MSG-09–16; TN03 dùng BR-23–32, MSG-17–22; TN04 dùng BR-33–45, MSG-23–34; TN05 dùng BR-46–58, MSG-35–44. Mã bổ sung sau đánh tiếp từ số cuối: BR-59 (tên khách), MSG-45 (đơn giữ đang mở ở máy khác) ở SRS TN02.
 - Giá trị đánh dấu `[giả định]` dùng để dựng flow, cần PO hoặc BA xác nhận trước khi dùng.
 
 ## Danh sách màn hình
