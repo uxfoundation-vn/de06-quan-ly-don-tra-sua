@@ -186,7 +186,9 @@ AC02: Đơn đã có ly làm xong mà bị huỷ → báo rõ số ly đã làm 
 
 ## 10. Câu hỏi mở
 
-- Đơn có vào màn pha chế trước khi thanh toán không (khách quen trả sau)?
-- Có cần chia trạm pha chế ngay ở MVP?
-- Màn khách dùng TV riêng hay mặt sau của POS?
-- Tự xác nhận nhận sau 15 phút có hợp lý không?
+> Mọi câu hỏi dưới đây đã được PO chốt ngày 13/11/2026; quyết định ghi sau mỗi câu và đã cập nhật vào SRS.
+
+- Đơn có vào màn pha chế trước khi thanh toán không (khách quen trả sau)? → **Đã chốt:** Không. Chỉ đơn đã thanh toán (SRS TN04 BR-40).
+- Có cần chia trạm pha chế ngay ở MVP? → **Đã chốt:** Không ở MVP.
+- Màn khách dùng TV riêng hay mặt sau của POS? → **Đã chốt:** Tablet riêng.
+- Tự xác nhận nhận sau 15 phút có hợp lý không? → **Đã chốt:** Giữ 15 phút (SRS BR-30).

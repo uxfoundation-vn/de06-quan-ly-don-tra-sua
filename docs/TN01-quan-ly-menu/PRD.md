@@ -79,7 +79,7 @@ Món mới chưa có công thức thì cảnh báo chủ quán, để báo cáo 
 | Mức đá | Không đá, Ít đá, Bình thường (mặc định), Nhiều đá, chọn 1 |
 | Topping | Chọn 0–3, mỗi topping tối đa 2 phần, giá cộng thêm |
 | Giá | Số nguyên VND, bội số 1.000 |
-| Hết món, hết tuỳ chọn | Có hiệu lực tới khi bật lại, hoặc tự bật lại khi mở ca hôm sau |
+| Hết món, hết tuỳ chọn | Có hiệu lực tới khi bật lại, hoặc tự bật lại khi mở ca đầu tiên của ngày hôm sau |
 | Xoá món | Chỉ khi không có trong đơn chưa xong; món đã bán vẫn giữ trong báo cáo |
 | Công thức | Theo size; đơn vị gram, ml, cái |
 
@@ -149,11 +149,11 @@ AC02: POS hiện món mờ, nhãn "Hết", không chọn được, trong ≤ 10 
 
 AC03: Hết một tuỳ chọn (ví dụ trân châu trắng) → mọi món có tuỳ chọn đó vẫn bán, chỉ tuỳ chọn bị khoá.
 
-AC04: Đầu ca hôm sau tự bật lại; có danh sách "Đang hết" để bật lại thủ công.
+AC04: Mở ca đầu tiên của ngày hôm sau thì tự bật lại (ca thứ hai trong cùng ngày không tự bật); có danh sách "Đang hết" để bật lại thủ công.
 
 ### UC3. Đổi giá và xoá món
 
-AC01: Đổi giá áp dụng cho đơn tạo sau thời điểm lưu; đơn đang tạo dở giữ giá cũ.
+AC01: Đổi giá áp dụng cho món được thêm vào giỏ sau thời điểm lưu. Trong đơn đang tạo dở, dòng đã có trong giỏ giữ giá cũ, dòng thêm sau đó tính giá mới.
 
 AC02: Xoá món đang có trong đơn chưa xong → không cho, gợi ý ẩn món.
 
@@ -180,7 +180,9 @@ AC03: Món đã xoá hoặc ẩn vẫn hiện đúng tên, giá trong báo cáo 
 
 ## 10. Câu hỏi mở
 
-- Thu ngân có được báo hết món không, hay chỉ quản lý ca?
-- Có cần giá khác nhau cho từng mức đá, đường (ví dụ "Không đường" giảm giá)?
-- Số topping tối đa là 3 hay cho mỗi món tự cấu hình?
-- Hết món có tự bật lại mỗi đầu ca không?
+> Mọi câu hỏi dưới đây đã được PO chốt ngày 13/11/2026; quyết định ghi sau mỗi câu và đã cập nhật vào SRS.
+
+- Thu ngân có được báo hết món không, hay chỉ quản lý ca? → **Đã chốt:** Không. Chỉ quản lý ca và chủ quán (SRS BR-08).
+- Có cần giá khác nhau cho từng mức đá, đường (ví dụ "Không đường" giảm giá)? → **Đã chốt:** Không. Mức đá, mức đường không cộng giá.
+- Số topping tối đa là 3 hay cho mỗi món tự cấu hình? → **Đã chốt:** Mỗi nhóm tuỳ chọn tự cấu hình min, max (SRS BR-04).
+- Hết món có tự bật lại mỗi đầu ca không? → **Đã chốt:** Chỉ tự bật lại khi mở ca đầu tiên của ngày (SRS BR-07).

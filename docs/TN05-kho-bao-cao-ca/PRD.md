@@ -110,7 +110,7 @@ flowchart LR
 | 2 | Trong ca | Kho trừ tự động; cảnh báo khi sắp hết | Tồn kho cập nhật |
 | 3 | Nhập hàng | Phiếu nhập: nguyên liệu, số lượng theo đơn vị mua | Tồn tăng |
 | 4 | Kiểm kê | Đếm thực tế, nhập số, hệ thống ghi chênh lệch | Tồn khớp thực tế |
-| 5 | Chốt ca | Đếm két theo mệnh giá; xử lý đơn giữ còn lại | Báo cáo ca |
+| 5 | Chốt ca | Đếm két theo mệnh giá; xử lý đơn giữ và đơn chưa giao còn lại | Báo cáo ca |
 | 6 | Xem báo cáo | Chủ quán mở Web: doanh thu, ly, món bán chạy | Ra quyết định |
 
 ## 7. Use Cases, User Stories và Acceptance Criteria
@@ -157,7 +157,7 @@ User Story: Là quản lý ca, tôi muốn mở ca và nhập tiền đầu ca �
 
 AC01: Đầu ngày POS yêu cầu mở ca; nhập tiền đầu ca.
 
-AC02: Mở ca → món, tuỳ chọn hết của hôm trước tự bật lại (TN01).
+AC02: Mở ca đầu tiên của ngày → món, tuỳ chọn hết của hôm trước tự bật lại (TN01); ca thứ hai trong ngày giữ nguyên món đang hết.
 
 #### US2.2 Chốt ca
 
@@ -165,7 +165,7 @@ User Story: Là quản lý ca, tôi muốn đếm két và biết ngay có lệc
 
 AC01: Còn đơn giữ hoặc đơn QR chờ → phải xử lý trước khi chốt.
 
-AC02: Đếm két theo mệnh giá; hệ thống tính tiền mặt dự kiến = đầu ca + thu tiền mặt − hoàn tiền mặt.
+AC02: Đếm két theo mệnh giá; hệ thống tính tiền mặt dự kiến = đầu ca + thu tiền mặt − hoàn tiền mặt (thu tiền mặt ghi theo tổng đơn, đã trừ tiền thối).
 
 AC03: Hiện chênh lệch; > 50.000 ₫ cần lý do và PIN quản lý.
 
@@ -206,7 +206,9 @@ AC04: Chọn khoảng ngày; xuất CSV.
 
 ## 10. Câu hỏi mở
 
-- Có cho nhiều ca chồng nhau (2 thu ngân, 2 két) không?
-- Tồn âm có chặn bán món không?
-- Ngưỡng chênh lệch két 50.000 ₫ có phù hợp?
-- Báo cáo có cần giá vốn ngay ở MVP?
+> Mọi câu hỏi dưới đây đã được PO chốt ngày 13/11/2026; quyết định ghi sau mỗi câu và đã cập nhật vào SRS.
+
+- Có cho nhiều ca chồng nhau (2 thu ngân, 2 két) không? → **Đã chốt:** Không. Mỗi quán tối đa 1 ca mở (SRS BR-54).
+- Tồn âm có chặn bán món không? → **Đã chốt:** Không chặn; chỉ cảnh báo trạng thái Âm (SRS BR-49, BR-51).
+- Ngưỡng chênh lệch két 50.000 ₫ có phù hợp? → **Đã chốt:** Giữ 50.000 ₫ (SRS BR-56).
+- Báo cáo có cần giá vốn ngay ở MVP? → **Đã chốt:** Không ở MVP.

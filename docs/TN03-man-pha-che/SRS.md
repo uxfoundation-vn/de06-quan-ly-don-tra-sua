@@ -12,7 +12,7 @@
 | Actor | Pha chế · Màn pha chế · Màn khách · POS · Máy chủ |
 | Phạm vi | Hàng đợi, thẻ đơn, đánh dấu ly, ngưỡng trễ, Sẵn sàng, gọi khách, Đã giao, đơn bị huỷ, mất kết nối |
 | Ngoài phạm vi | Nhiều trạm, hướng dẫn công thức, ưu tiên thủ công, gọi qua tin nhắn |
-| Nền tảng | Màn pha chế (tablet dọc hoặc ngang), Màn khách (TV hoặc tablet) `[giả định]` |
+| Nền tảng | Màn pha chế (tablet dọc hoặc ngang), Màn khách (tablet) |
 | Figma | `[chưa có]` |
 
 ## 2. User Story
@@ -71,8 +71,8 @@ stateDiagram-v2
 
 | **Trạng thái đơn** | **Màn khách** |
 | --- | --- |
-| `DA_THANH_TOAN`, `DANG_PHA_CHE` | Cột "Đang pha chế": số thứ tự |
-| `SAN_SANG` | Cột "Mời nhận": số thứ tự cỡ lớn, nhấp nháy khi gọi |
+| `DA_THANH_TOAN`, `DANG_PHA_CHE` | Cột "Đang pha chế": số thứ tự, kèm tên khách nếu có (TN02 BR-59) |
+| `SAN_SANG` | Cột "Mời nhận": số thứ tự cỡ lớn kèm tên khách nếu có, nhấp nháy khi gọi |
 | `DA_GIAO`, `DA_HUY` | Không hiện |
 
 ## 5. Use Case

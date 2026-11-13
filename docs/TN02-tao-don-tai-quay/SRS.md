@@ -38,7 +38,8 @@
 | BR-17 | **Hiển thị dòng giỏ**: dòng phụ chỉ ghi lựa chọn khác mặc định và ghi chú, chữ đậm |
 | BR-18 | **Món hết trong giỏ**: khi món hoặc lựa chọn chuyển `HET_MON`/`HET` (TN01), dòng chứa nó có cờ `CAN_DOI`; còn dòng `CAN_DOI` thì nút Thanh toán disabled |
 | BR-19 | **Giảm giá đơn**: % (1–100) hoặc số tiền (≤ tạm tính); bắt buộc lý do; > 20% hoặc > 50.000 ₫ cần PIN quản lý ca `[giả định]` |
-| BR-20 | **Giữ đơn**: tối đa 5 đơn `TAM_GIU` mỗi máy; tên gợi nhớ ≤ 20 ký tự; đơn giữ được lưu trên máy và máy chủ; chốt ca còn đơn giữ → phải xử lý (TN05) |
+| BR-20 | **Giữ đơn**: tối đa 5 đơn `TAM_GIU` mỗi máy; tên gợi nhớ ≤ 20 ký tự; đơn giữ được lưu trên máy và máy chủ; chốt ca còn đơn giữ → phải xử lý (TN05). **Chuyển máy**: mọi POS trong cùng ca thấy đơn giữ của nhau ở **SCR-P04** (ghi tên máy); mở đơn giữ từ máy khác thì đơn chuyển sang máy đang mở và tính vào giới hạn 5 của máy đó. Mỗi đơn chỉ được mở trên một máy tại một lúc; máy khác mở cùng lúc → MSG-45 |
+| BR-59 | **Tên khách** (tuỳ chọn, ≤ 20 ký tự) nhập ở giỏ hàng. Có tên → màn khách, lời gọi và tem ly hiện **cả số thứ tự và tên** "{số} · {tên}"; bill in tên dưới số thứ tự. Không có tên → chỉ hiện số |
 | BR-21 | **Hình thức** `MANG_DI` (mặc định) hoặc `TAI_QUAN`; in trên bill và tem ly |
 | BR-22 | **Sang thanh toán**: giỏ có ≥ 1 dòng, không có dòng `CAN_DOI` → đơn `CHO_THANH_TOAN`; giá các dòng bị khoá. Quay lại sửa → `DANG_TAO` |
 
@@ -271,6 +272,7 @@ flowchart TD
 | 5 | Giỏ hàng | Cột phải cố định | Dòng: tên, size, số lượng, thành tiền; dòng phụ BR-17; nút nhân bản, +, −; vuốt trái xoá |
 | 6 | Tạm tính, giảm giá, tổng | Footer giỏ | Giảm giá chạm để sửa |
 | 7 | Hình thức | Segmented | Mang đi · Tại quán |
+| 7b | Tên khách | Text | Tuỳ chọn, ≤ 20 ký tự (BR-59) |
 | 8 | Giữ đơn · Xoá đơn | Buttons | |
 | 9 | Thanh toán {tổng} | Button lớn | Disabled khi giỏ trống hoặc có `CAN_DOI` |
 
@@ -291,7 +293,7 @@ flowchart TD
 | **#** | **Thành phần** | **Loại** | **Hành vi** |
 | --- | --- | --- | --- |
 | 1 | Tab | Tabs | Đơn giữ · Đơn trong ca |
-| 2 | Thẻ đơn giữ | Card | Tên gợi nhớ, số ly, tổng, "Giữ {n} phút"; Mở, Bỏ |
+| 2 | Thẻ đơn giữ | Card | Tên gợi nhớ, số ly, tổng, "Giữ {n} phút", máy đang giữ; Mở (chuyển về máy này nếu ở máy khác, BR-20), Bỏ |
 | 3 | Đơn trong ca | Table | Số thứ tự, giờ, tổng, phương thức, trạng thái; mở chi tiết, in lại, huỷ (SRS TN04) |
 
 ## 8. API
@@ -300,9 +302,10 @@ flowchart TD
 | --- | --- | --- | --- |
 | \[PosLogin\] | device_id, pin | staff, role, shift_id | 3s / 1 lần |
 | \[ItemSearch\] (trên máy) | keyword | Món khớp | Chạy trên menu đã lưu |
-| \[OrderDraftSync\] | order_id, lines, discount, mode, status | saved_at | 3s / tự đồng bộ lại; giỏ luôn lưu trên máy trước |
+| \[OrderDraftSync\] | order_id, lines, discount, mode, customer_name, status | saved_at | 3s / tự đồng bộ lại; giỏ luôn lưu trên máy trước |
 | \[OrderHold\] | order_id, name | status `TAM_GIU` | 3s / 2 lần |
-| \[OrderHeldList\] | device_id | Đơn giữ | 3s / 1 lần |
+| \[OrderHeldList\] | shift_id | Đơn giữ của mọi máy trong ca, máy đang giữ, máy đang mở | 3s / 1 lần |
+| \[OrderHeldOpen\] | order_id, device_id | Đơn, khoá mở; hoặc lỗi đang mở ở máy khác (MSG-45) | 3s / 1 lần; BR-20 |
 | \[ManagerPinVerify\] | pin, action | approved, manager_id | 3s / 1 lần |
 | \[OrderToCheckout\] | order_id | status `CHO_THANH_TOAN`, tổng đã khoá | 3s / 2 lần |
 
@@ -351,6 +354,7 @@ sequenceDiagram
 | MSG-14 | Toast | Đã giữ 5 đơn. Vui lòng xử lý bớt đơn giữ |
 | MSG-15 | Popup | Giỏ hiện tại đang có món. Giữ đơn này trước khi mở đơn khác? \[Giữ đơn hiện tại\] \[Huỷ\] |
 | MSG-16 | Inline giỏ | Giá menu đã thay đổi. Đơn giữ áp dụng giá lúc giữ |
+| MSG-45 | Toast | Đơn "{tên gợi nhớ}" đang được mở ở {tên máy}. Vui lòng thử lại sau |
 
 MSG-07 dùng lại từ SRS TN01. Bản EN: `[chờ bổ sung]`.
 
