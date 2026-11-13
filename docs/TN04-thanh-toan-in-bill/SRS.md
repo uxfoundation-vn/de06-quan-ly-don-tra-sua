@@ -1,8 +1,8 @@
-> **Mã:** DE06-TN04-SRS · **Trạng thái:** nháp · **Người viết:** Design (mock) · **PRD:** [PRD.md](PRD.md)
+> **Mã:** DE06-TN04-SRS · **Trạng thái:** đã chốt · **Người viết:** Design · **PRD:** [PRD.md](PRD.md)
 
 # UC-DE06-04 - Thanh toán và in bill
 
-> **Bản mock.** Giá trị `[giả định]` cần BA xác nhận. SRS này mô tả đơn từ `CHO_THANH_TOAN` tới `DA_THANH_TOAN`, và mọi đường vào `DA_HUY` sau khi đã thanh toán.
+> SRS này mô tả đơn từ `CHO_THANH_TOAN` tới `DA_THANH_TOAN`, và mọi đường vào `DA_HUY` sau khi đã thanh toán.
 
 ## 1. Tổng quan
 
@@ -12,7 +12,7 @@
 | Actor | Thu ngân · Quản lý ca · Khách · POS · Màn khách · Máy in · Máy chủ · Đối tác xác nhận chuyển khoản |
 | Phạm vi | Màn thanh toán, tiền mặt, QR động, xác nhận, số thứ tự, in, in lại, huỷ, hoàn tiền, thanh toán ngoại tuyến |
 | Ngoài phạm vi | Quẹt thẻ, ví điện tử, chia hoá đơn, nhiều phương thức một đơn (trừ bù phần QR thiếu bằng tiền mặt, BR-37), VAT, tip |
-| Nền tảng | POS, Màn khách, máy in nhiệt kết nối POS `[giả định]` |
+| Nền tảng | POS, Màn khách, máy in nhiệt kết nối POS |
 
 ## 2. User Story
 
@@ -29,16 +29,16 @@
 | **Mã** | **Quy tắc** |
 | --- | --- |
 | BR-33 | **Tổng đơn** = tạm tính − giảm giá (TN02); khoá khi đơn `CHO_THANH_TOAN` |
-| BR-34 | **Mệnh giá gợi ý**: số tiền đúng; mệnh giá tiền Việt Nam nhỏ nhất ≥ tổng; và 2 mệnh giá kế tiếp trong {10.000, 20.000, 50.000, 100.000, 200.000, 500.000} `[giả định]` |
+| BR-34 | **Mệnh giá gợi ý**: số tiền đúng; mệnh giá tiền Việt Nam nhỏ nhất ≥ tổng; và 2 mệnh giá kế tiếp trong {10.000, 20.000, 50.000, 100.000, 200.000, 500.000} |
 | BR-35 | **Tiền mặt**: tiền khách đưa ≥ tổng; tiền thối = khách đưa − tổng |
 | BR-36 | **QR động**: chuẩn QR chuyển khoản, chứa tài khoản quán, số tiền = tổng, nội dung = mã đơn 8 ký tự; hiệu lực 10 phút; mỗi đơn tối đa 1 QR còn hiệu lực |
-| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → đơn `THIEU_TIEN`, ghi số đã nhận, báo còn thiếu (MSG-26); khách chuyển thêm bằng QR mới cho số còn thiếu, hoặc bù bằng tiền mặt. Đây là ngoại lệ duy nhất của quy tắc một phương thức mỗi đơn `[giả định]`: đơn ghi hai dòng thanh toán, phần đã chuyển tính vào doanh thu QR, phần bù tính vào thu tiền mặt của ca (BR-56). Đủ tổng → `DA_THANH_TOAN`. Khách không trả tiếp → thu ngân bấm "Huỷ thanh toán" kèm PIN quản lý ca: số đã nhận ghi `tien_du` cần hoàn (`CHO_HOAN`), đơn `DA_HUY`, không cấp số thứ tự, không trừ kho |
+| BR-37 | **Xác nhận QR**: nhận thông báo giao dịch có nội dung chứa mã đơn. Số tiền = tổng → `DA_THANH_TOAN`. > tổng → `DA_THANH_TOAN` + ghi `tien_du` cần hoàn. < tổng → đơn `THIEU_TIEN`, ghi số đã nhận, báo còn thiếu (MSG-26); khách chuyển thêm bằng QR mới cho số còn thiếu, hoặc bù bằng tiền mặt. Đây là ngoại lệ duy nhất của quy tắc một phương thức mỗi đơn: đơn ghi hai dòng thanh toán, phần đã chuyển tính vào doanh thu QR, phần bù tính vào thu tiền mặt của ca (BR-56). Đủ tổng → `DA_THANH_TOAN`. Khách không trả tiếp → thu ngân bấm "Huỷ thanh toán" kèm PIN quản lý ca: số đã nhận ghi `tien_du` cần hoàn (`CHO_HOAN`), đơn `DA_HUY`, không cấp số thứ tự, không trừ kho |
 | BR-38 | **Chờ xác nhận** quá 2 phút → hiện MSG-25 với "Kiểm tra lại" (gọi tra cứu giao dịch) và "Đổi sang tiền mặt". Không có thao tác đánh dấu QR thủ công |
 | BR-39 | **Đổi phương thức** khi đang chờ QR: huỷ QR; nếu sau đó vẫn nhận tiền QR của đơn → ghi `tien_du` cần hoàn, báo quản lý ca |
 | BR-40 | **Khi `DA_THANH_TOAN`**, các việc sau chạy trong một giao dịch dữ liệu duy nhất (thành công cả hoặc không ghi gì), không liên quan tới số lần khách trả tiền: cấp số thứ tự kế tiếp; số thứ tự bắt đầu lại từ 1 khi mở ca đầu tiên của ngày, không bắt đầu lại lúc 00:00, nên ca mở qua 00:00 dùng tiếp dãy số đang chạy (TN05 BR-54); ghi `paid_at`; đẩy sang màn pha chế (TN03); trừ kho theo công thức (TN05); gửi lệnh in |
-| BR-41 | **In**: tem luôn in, 1 tem mỗi ly. **Bill tuỳ chọn**: công tắc "In bill" ở **SCR-P03**, mặc định bật `[giả định]`; tắt thì không in bill, in lại được sau từ **SCR-P04**. Lỗi in không chặn hoàn tất; đơn có cờ `CHUA_IN`; in lại từ **SCR-P04** |
-| BR-42 | **Ngoại tuyến**: chỉ cho Tiền mặt; số thứ tự cấp trên máy theo dải riêng của máy (ví dụ máy 2: 2001…) để không trùng `[giả định]`; đơn lưu máy, đồng bộ khi có mạng; tem in ở POS thay cho màn pha chế |
-| BR-43 | **Huỷ đơn đã thanh toán**: cần PIN quản lý ca (BR-08), lý do (Khách đổi ý, Làm sai món, Hết nguyên liệu, Khác + ghi chú). Không huỷ được khi `DA_GIAO` quá 30 phút `[giả định]`. Đơn thuộc **ca đã chốt** mà còn trong 30 phút: vẫn huỷ được nhưng phải có ca `DANG_MO`; khoản huỷ và hoàn tiền ghi vào ca đang mở ở mục "Huỷ đơn của ca trước", báo cáo của ca đã chốt không đổi (TN05 BR-57) |
+| BR-41 | **In**: tem luôn in, 1 tem mỗi ly. **Bill tuỳ chọn**: công tắc "In bill" ở **SCR-P03**, mặc định bật; tắt thì không in bill, in lại được sau từ **SCR-P04**. Lỗi in không chặn hoàn tất; đơn có cờ `CHUA_IN`; in lại từ **SCR-P04** |
+| BR-42 | **Ngoại tuyến**: chỉ cho Tiền mặt; số thứ tự cấp trên máy theo dải riêng của máy (ví dụ máy 2: 2001…) để không trùng; đơn lưu máy, đồng bộ khi có mạng; tem in ở POS thay cho màn pha chế |
+| BR-43 | **Huỷ đơn đã thanh toán**: cần PIN quản lý ca (BR-08), lý do (Khách đổi ý, Làm sai món, Hết nguyên liệu, Khác + ghi chú). Không huỷ được khi `DA_GIAO` quá 30 phút. Đơn thuộc **ca đã chốt** mà còn trong 30 phút: vẫn huỷ được nhưng phải có ca `DANG_MO`; khoản huỷ và hoàn tiền ghi vào ca đang mở ở mục "Huỷ đơn của ca trước", báo cáo của ca đã chốt không đổi (TN05 BR-57) |
 | BR-44 | **Hoàn tiền**: tiền mặt → POS hiện số tiền trả lại, ghi giảm két; QR → tạo yêu cầu hoàn `CHO_HOAN`, quản lý ca chuyển khoản ngoài hệ thống rồi bấm "Đã hoàn" |
 | BR-45 | **Hoàn kho khi huỷ**: ly chưa `XONG` → hoàn nguyên liệu; ly đã `XONG` → ghi hao hụt (TN05). Mọi lần huỷ ghi nhật ký: đơn, người huỷ, người duyệt, lý do, số tiền |
 
@@ -333,7 +333,7 @@ Thối lại             80.000
 
 ## 8. API
 
-| **API** | **Request chính** | **Response chính** | **Timeout / retry** `[giả định]` |
+| **API** | **Request chính** | **Response chính** | **Timeout / retry** |
 | --- | --- | --- | --- |
 | \[PaymentCash\] | order_id, tendered, request_id | status, order_number, change | 5s / gửi lại cùng request_id; ngoại tuyến lưu máy |
 | \[QrCreate\] | order_id, amount | qr_payload, ref_code, expires_at | 5s / 2 lần |
@@ -401,7 +401,7 @@ MSG-12 dùng lại từ SRS TN02.
 
 ## 10. Yêu cầu phi chức năng
 
-| **Mục** | **Yêu cầu** `[giả định]` |
+| **Mục** | **Yêu cầu** |
 | --- | --- |
 | Hiệu năng | Hoàn tất tiền mặt ≤ 1 giây; xử lý webhook tới POS ≤ 3 giây |
 | Toàn vẹn tiền | Mỗi đơn chỉ chuyển `DA_THANH_TOAN` một lần; webhook idempotent theo transaction_id; đối soát giao dịch ngân hàng với đơn mỗi giờ |

@@ -1,8 +1,6 @@
-> **Mã:** DE06-TN01-PRD · **Trạng thái:** nháp · **Người viết:** Design (mock) · **SRS:** [SRS.md](SRS.md)
+> **Mã:** DE06-TN01-PRD · **Trạng thái:** đã chốt · **Người viết:** Design · **SRS:** [SRS.md](SRS.md)
 
 # PRD Quản lý menu (Quản lý đơn hàng quán trà sữa)
-
-> **Bản mock.** Con số đánh dấu `[giả định]` dùng để dựng flow, cần PO xác nhận trước khi dùng.
 
 ## 1. Bối cảnh và vấn đề
 
@@ -22,8 +20,8 @@ Menu là dữ liệu gốc của cả hệ thống: thu ngân bán theo menu ([T
 
 ### 1.3 Mục tiêu
 
-- Thêm một món mới hoàn chỉnh (size, tuỳ chọn, giá) trong ≤ 3 phút `[giả định]`.
-- Bật, tắt "hết món" có hiệu lực trên POS trong ≤ 10 giây `[giả định]`.
+- Thêm một món mới hoàn chỉnh (size, tuỳ chọn, giá) trong ≤ 3 phút.
+- Bật, tắt "hết món" có hiệu lực trên POS trong ≤ 10 giây.
 - 100% món đang bán có công thức để trừ kho.
 
 ## 2. Người dùng
@@ -72,7 +70,7 @@ Món mới chưa có công thức thì cảnh báo chủ quán, để báo cáo 
 
 ## 5. Quy tắc nghiệp vụ
 
-| **Quy tắc** | **Giá trị** `[giả định]` |
+| **Quy tắc** | **Giá trị** |
 | --- | --- |
 | Size | 1–3 size mỗi món (M, L, XL), mỗi size một giá |
 | Mức đường | 0%, 30%, 50%, 70%, 100% (mặc định 100%), chọn 1 |
@@ -159,7 +157,7 @@ AC02: Xoá món đang có trong đơn chưa xong → không cho, gợi ý ẩn m
 
 AC03: Món đã xoá hoặc ẩn vẫn hiện đúng tên, giá trong báo cáo cũ.
 
-## 8. Chỉ số theo dõi `[giả định]`
+## 8. Chỉ số theo dõi
 
 | **Chỉ số** | **Định nghĩa** | **Mục tiêu MVP** |
 | --- | --- | --- |

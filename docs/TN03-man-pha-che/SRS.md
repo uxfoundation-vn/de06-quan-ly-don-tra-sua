@@ -1,8 +1,8 @@
-> **Mã:** DE06-TN03-SRS · **Trạng thái:** nháp · **Người viết:** Design (mock) · **PRD:** [PRD.md](PRD.md)
+> **Mã:** DE06-TN03-SRS · **Trạng thái:** đã chốt · **Người viết:** Design · **PRD:** [PRD.md](PRD.md)
 
 # UC-DE06-03 - Màn pha chế realtime
 
-> **Bản mock.** Giá trị `[giả định]` cần BA xác nhận. SRS này mô tả đơn từ `DA_THANH_TOAN` tới `DA_GIAO`; thanh toán và huỷ xem [SRS TN04](../TN04-thanh-toan-in-bill/SRS.md).
+> SRS này mô tả đơn từ `DA_THANH_TOAN` tới `DA_GIAO`; thanh toán và huỷ xem [SRS TN04](../TN04-thanh-toan-in-bill/SRS.md).
 
 ## 1. Tổng quan
 
@@ -30,12 +30,12 @@
 | --- | --- |
 | BR-23 | **Vào hàng đợi**: đơn `DA_THANH_TOAN` được đẩy tới màn pha chế qua kết nối realtime; mỗi ly là một "ly pha" (dòng số lượng 3 → 3 ly pha) |
 | BR-24 | **Thứ tự**: sắp theo `paid_at` tăng dần; đơn `TRE` luôn được ghim đầu hàng đợi, giữa các đơn trễ vẫn theo `paid_at` |
-| BR-25 | **Ngưỡng thời gian chờ** tính từ `paid_at`: `BINH_THUONG` < 5 phút, `CHU_Y` 5–10 phút, `TRE` > 10 phút `[giả định]` |
+| BR-25 | **Ngưỡng thời gian chờ** tính từ `paid_at`: `BINH_THUONG` < 5 phút, `CHU_Y` 5–10 phút, `TRE` > 10 phút |
 | BR-26 | **Hiển thị ly pha**: tên món, size; chỉ in tuỳ chọn khác mặc định và ghi chú (in đậm, có dấu "•"); topping ghi số phần khi > 1 |
 | BR-27 | **Đánh dấu**: chạm ly pha → `XONG`; chạm lại → `CHUA`. Ly đầu tiên `XONG` → đơn `DANG_PHA_CHE`. Mọi ly `XONG` → đơn `SAN_SANG` |
 | BR-28 | **Bỏ đánh dấu** ở đơn `SAN_SANG` → đơn về `DANG_PHA_CHE`, gỡ số khỏi màn khách |
 | BR-29 | **Gọi khách**: đơn `SAN_SANG` hiện số trên màn khách kèm âm báo; "Gọi lại" tối đa 3 lần, mỗi lần cách ≥ 30 giây |
-| BR-30 | **Đã giao**: pha chế chạm "Đã giao", hoặc tự chuyển sau 15 phút ở `SAN_SANG` `[giả định]` |
+| BR-30 | **Đã giao**: pha chế chạm "Đã giao", hoặc tự chuyển sau 15 phút ở `SAN_SANG` |
 | BR-31 | **Đơn bị huỷ** khi đang ở màn pha chế: thẻ hiện nhãn "ĐÃ HUỶ", âm báo khác, tự gỡ sau 30 giây; ghi số ly đã `XONG` vào nhật ký huỷ (TN05 dùng để ghi hao hụt) |
 | BR-32 | **Mất kết nối**: màn pha chế báo đỏ; khi kết nối lại gọi \[KdsSync\] lấy đầy đủ đơn chưa `DA_GIAO`; thao tác đánh dấu khi mất mạng được xếp hàng và gửi lại |
 
@@ -221,7 +221,7 @@ flowchart TD
 | Đăng nhập PIN trên màn pha chế | **SCR-K01** | Vai trò pha chế, quản lý ca, chủ quán |
 | Đơn mới từ TN04 | UC-09 | Tự động |
 | Đơn bị huỷ từ TN04 | UC-11 | Tự động |
-| Màn khách bật | **SCR-K02** | Chế độ hiển thị, không cần đăng nhập, ghép với quán bằng mã `[giả định]` |
+| Màn khách bật | **SCR-K02** | Chế độ hiển thị, không cần đăng nhập, ghép với quán bằng mã |
 
 ## 7. Mô tả màn hình
 
@@ -249,7 +249,7 @@ flowchart TD
 
 ## 8. API
 
-| **API** | **Request chính** | **Response chính** | **Timeout / retry** `[giả định]` |
+| **API** | **Request chính** | **Response chính** | **Timeout / retry** |
 | --- | --- | --- | --- |
 | \[KdsEvent\] (máy chủ → màn pha chế, màn khách) | type (ORDER_NEW, ORDER_CANCELLED, ORDER_STATUS), order | – | Kết nối realtime trong mạng quán |
 | \[KdsSync\] | store_id, since | Mọi đơn chưa `DA_GIAO`, `DA_HUY`, kèm trạng thái ly | 5s / 3 lần |
@@ -299,7 +299,7 @@ sequenceDiagram
 
 ## 10. Yêu cầu phi chức năng
 
-| **Mục** | **Yêu cầu** `[giả định]` |
+| **Mục** | **Yêu cầu** |
 | --- | --- |
 | Hiệu năng | Đơn hiện ≤ 3 giây sau thanh toán (p95); đánh dấu ly phản hồi trên màn ≤ 100 ms |
 | Tin cậy | Không mất đơn khi màn pha chế khởi động lại hoặc mất mạng: \[KdsSync\] khôi phục đầy đủ |

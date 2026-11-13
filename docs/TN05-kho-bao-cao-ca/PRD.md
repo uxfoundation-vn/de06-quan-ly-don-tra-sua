@@ -1,8 +1,6 @@
-> **Mã:** DE06-TN05-PRD · **Trạng thái:** nháp · **Người viết:** Design (mock) · **SRS:** [SRS.md](SRS.md)
+> **Mã:** DE06-TN05-PRD · **Trạng thái:** đã chốt · **Người viết:** Design · **SRS:** [SRS.md](SRS.md)
 
 # PRD Kho nguyên liệu và báo cáo ca (Quản lý đơn hàng quán trà sữa)
-
-> **Bản mock.** Con số đánh dấu `[giả định]` dùng để dựng flow, cần PO xác nhận trước khi dùng.
 
 ## 1. Bối cảnh và vấn đề
 
@@ -22,9 +20,9 @@ Mỗi ly bán ra ([TN04](../TN04-thanh-toan-in-bill/PRD.md)) dùng một lượn
 
 ### 1.3 Mục tiêu
 
-- ≥ 90% lần hết nguyên liệu được cảnh báo trước ít nhất 1 ngày `[giả định]`.
+- ≥ 90% lần hết nguyên liệu được cảnh báo trước ít nhất 1 ngày.
 - 100% ca được chốt có đếm két và ghi chênh lệch.
-- Chủ quán xem doanh thu hôm nay trong ≤ 5 giây từ lúc mở Web `[giả định]`.
+- Chủ quán xem doanh thu hôm nay trong ≤ 5 giây từ lúc mở Web.
 
 ## 2. Người dùng
 
@@ -72,7 +70,7 @@ Doanh thu hôm nay, số ly, so với cùng ngày tuần trước. Chi tiết �
 
 ## 5. Quy tắc nghiệp vụ
 
-| **Quy tắc** | **Giá trị** `[giả định]` |
+| **Quy tắc** | **Giá trị** |
 | --- | --- |
 | Đơn vị | gram, ml, cái; nhập theo đơn vị mua (thùng, hộp) quy đổi sang đơn vị dùng |
 | Trừ kho | Khi đơn Đã thanh toán, theo công thức của size và tuỳ chọn |
@@ -185,7 +183,7 @@ AC03: Top món và topping bán chạy theo số ly.
 
 AC04: Chọn khoảng ngày; xuất CSV.
 
-## 8. Chỉ số theo dõi `[giả định]`
+## 8. Chỉ số theo dõi
 
 | **Chỉ số** | **Định nghĩa** | **Mục tiêu MVP** |
 | --- | --- | --- |
