@@ -1,8 +1,8 @@
-> **Mã:** DE06-TN02-SRS · **Trạng thái:** nháp · **Người viết:** Design (mock) · **PRD:** [PRD.md](PRD.md)
+> **Mã:** DE06-TN02-SRS · **Trạng thái:** đã chốt · **Người viết:** Design · **PRD:** [PRD.md](PRD.md)
 
 # UC-DE06-02 - Tạo đơn tại quầy
 
-> **Bản mock.** Giá trị `[giả định]` cần BA xác nhận. SRS này mô tả đơn từ `DANG_TAO` tới `CHO_THANH_TOAN`, kèm `TAM_GIU` và `DA_BO`; thanh toán xem [SRS TN04](../TN04-thanh-toan-in-bill/SRS.md).
+> SRS này mô tả đơn từ `DANG_TAO` tới `CHO_THANH_TOAN`, kèm `TAM_GIU` và `DA_BO`; thanh toán xem [SRS TN04](../TN04-thanh-toan-in-bill/SRS.md).
 
 ## 1. Tổng quan
 
@@ -12,7 +12,7 @@
 | Actor | Thu ngân · Quản lý ca (PIN giảm giá) · POS · Máy chủ |
 | Phạm vi | Màn bán hàng, tìm món, thêm nhanh, màn tuỳ chọn, giỏ hàng, giảm giá đơn, giữ đơn, hình thức, sang thanh toán |
 | Ngoài phạm vi | Khách tự đặt, tích điểm, mã khuyến mãi, chia gộp đơn, giao hàng |
-| Nền tảng | POS (tablet ngang) `[giả định]` |
+| Nền tảng | POS (tablet ngang) |
 
 ## 2. User Story
 
@@ -33,10 +33,10 @@
 | BR-13 | **Đơn giá dòng** = giá size + tổng (giá cộng thêm × số phần) của các lựa chọn. **Thành tiền** = đơn giá × số lượng |
 | BR-14 | **Thêm nhanh** = size đầu tiên + mặc định của mọi nhóm; không mở màn tuỳ chọn |
 | BR-15 | **Gộp dòng**: thêm ly có cùng món, size, tuỳ chọn, ghi chú với dòng có sẵn → tăng số lượng dòng đó thay vì thêm dòng mới |
-| BR-16 | **Giới hạn**: số lượng mỗi dòng 1–20; tối đa 30 dòng mỗi đơn; ghi chú ≤ 50 ký tự `[giả định]` |
+| BR-16 | **Giới hạn**: số lượng mỗi dòng 1–20; tối đa 30 dòng mỗi đơn; ghi chú ≤ 50 ký tự |
 | BR-17 | **Hiển thị dòng giỏ**: dòng phụ chỉ ghi lựa chọn khác mặc định và ghi chú, chữ đậm |
 | BR-18 | **Món hết trong giỏ**: khi món hoặc lựa chọn chuyển `HET_MON`/`HET` (TN01), dòng chứa nó có cờ `CAN_DOI`; còn dòng `CAN_DOI` thì nút Thanh toán disabled |
-| BR-19 | **Giảm giá đơn**: % (1–100) hoặc số tiền (≤ tạm tính); bắt buộc lý do; > 20% hoặc > 50.000 ₫ cần PIN quản lý ca `[giả định]` |
+| BR-19 | **Giảm giá đơn**: % (1–100) hoặc số tiền (≤ tạm tính); bắt buộc lý do; > 20% hoặc > 50.000 ₫ cần PIN quản lý ca |
 | BR-20 | **Giữ đơn**: tối đa 5 đơn `TAM_GIU` mỗi máy; tên gợi nhớ ≤ 20 ký tự; đơn giữ được lưu trên máy và máy chủ; chốt ca còn đơn giữ → phải xử lý (TN05). **Chuyển máy**: mọi POS trong cùng ca thấy đơn giữ của nhau ở **SCR-P04** (ghi tên máy); mở đơn giữ từ máy khác thì đơn chuyển sang máy đang mở và tính vào giới hạn 5 của máy đó. Mỗi đơn chỉ được mở trên một máy tại một lúc; máy khác mở cùng lúc → MSG-45 |
 | BR-59 | **Tên khách** (tuỳ chọn, ≤ 20 ký tự) nhập ở giỏ hàng. Có tên → màn khách, lời gọi và tem ly hiện **cả số thứ tự và tên** "{số} · {tên}"; bill in tên dưới số thứ tự. Không có tên → chỉ hiện số |
 | BR-21 | **Hình thức** `MANG_DI` (mặc định) hoặc `TAI_QUAN`; in trên bill và tem ly |
@@ -297,7 +297,7 @@ flowchart TD
 
 ## 8. API
 
-| **API** | **Request chính** | **Response chính** | **Timeout / retry** `[giả định]` |
+| **API** | **Request chính** | **Response chính** | **Timeout / retry** |
 | --- | --- | --- | --- |
 | \[PosLogin\] | device_id, pin | staff, role, shift_id | 3s / 1 lần |
 | \[ItemSearch\] (trên máy) | keyword | Món khớp | Chạy trên menu đã lưu |
@@ -359,7 +359,7 @@ MSG-07 dùng lại từ SRS TN01.
 
 ## 10. Yêu cầu phi chức năng
 
-| **Mục** | **Yêu cầu** `[giả định]` |
+| **Mục** | **Yêu cầu** |
 | --- | --- |
 | Hiệu năng | Phản hồi chạm ≤ 100 ms; mở **SCR-P02** ≤ 200 ms; tìm món ≤ 100 ms |
 | Offline | Nhập đơn, giữ đơn chạy được khi mất mạng; đồng bộ khi có mạng |

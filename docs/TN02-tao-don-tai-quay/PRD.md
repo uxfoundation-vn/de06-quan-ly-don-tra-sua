@@ -1,8 +1,6 @@
-> **Mã:** DE06-TN02-PRD · **Trạng thái:** nháp · **Người viết:** Design (mock) · **SRS:** [SRS.md](SRS.md)
+> **Mã:** DE06-TN02-PRD · **Trạng thái:** đã chốt · **Người viết:** Design · **SRS:** [SRS.md](SRS.md)
 
 # PRD Tạo đơn tại quầy (Quản lý đơn hàng quán trà sữa)
-
-> **Bản mock.** Con số đánh dấu `[giả định]` dùng để dựng flow, cần PO xác nhận trước khi dùng.
 
 ## 1. Bối cảnh và vấn đề
 
@@ -23,9 +21,9 @@ Thu ngân đứng quầy, khách gọi món bằng miệng, hàng người phía
 
 ### 1.3 Mục tiêu
 
-- Nhập một ly với tuỳ chọn mặc định trong ≤ 3 chạm; ly có tuỳ chọn riêng ≤ 6 chạm `[giả định]`.
-- Thời gian nhập đơn trung vị ≤ 30 giây với đơn 2 ly `[giả định]`.
-- Tỉ lệ ly làm lại vì nhập sai ≤ 1% `[giả định]`.
+- Nhập một ly với tuỳ chọn mặc định trong ≤ 3 chạm; ly có tuỳ chọn riêng ≤ 6 chạm.
+- Thời gian nhập đơn trung vị ≤ 30 giây với đơn 2 ly.
+- Tỉ lệ ly làm lại vì nhập sai ≤ 1%.
 
 ## 2. Người dùng
 
@@ -74,7 +72,7 @@ Giữ đơn, chuyển ca, mất mạng đều không làm mất giỏ hàng đan
 
 ## 5. Quy tắc nghiệp vụ
 
-| **Quy tắc** | **Giá trị** `[giả định]` |
+| **Quy tắc** | **Giá trị** |
 | --- | --- |
 | Số lượng mỗi dòng | 1–20 ly |
 | Số dòng mỗi đơn | Tối đa 30 |
@@ -190,7 +188,7 @@ AC01: Chọn Uống tại quán hoặc Mang đi trước khi thanh toán; mặc 
 
 AC02: Số thứ tự cấp khi thanh toán thành công (TN04), in trên bill.
 
-## 8. Chỉ số theo dõi `[giả định]`
+## 8. Chỉ số theo dõi
 
 | **Chỉ số** | **Định nghĩa** | **Mục tiêu MVP** |
 | --- | --- | --- |

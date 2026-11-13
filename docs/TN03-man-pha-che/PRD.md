@@ -1,8 +1,6 @@
-> **Mã:** DE06-TN03-PRD · **Trạng thái:** nháp · **Người viết:** Design (mock) · **SRS:** [SRS.md](SRS.md)
+> **Mã:** DE06-TN03-PRD · **Trạng thái:** đã chốt · **Người viết:** Design · **SRS:** [SRS.md](SRS.md)
 
 # PRD Màn pha chế realtime (Quản lý đơn hàng quán trà sữa)
-
-> **Bản mock.** Con số đánh dấu `[giả định]` dùng để dựng flow, cần PO xác nhận trước khi dùng.
 
 ## 1. Bối cảnh và vấn đề
 
@@ -22,8 +20,8 @@ Sau khi khách thanh toán ([TN04](../TN04-thanh-toan-in-bill/PRD.md)), đơn ph
 
 ### 1.3 Mục tiêu
 
-- Đơn hiện trên màn pha chế ≤ 3 giây sau khi thanh toán `[giả định]`.
-- Thời gian từ thanh toán tới sẵn sàng trung vị ≤ 5 phút giờ cao điểm `[giả định]`.
+- Đơn hiện trên màn pha chế ≤ 3 giây sau khi thanh toán.
+- Thời gian từ thanh toán tới sẵn sàng trung vị ≤ 5 phút giờ cao điểm.
 - Tỉ lệ giao thiếu ly ≈ 0.
 
 ## 2. Người dùng
@@ -74,7 +72,7 @@ Số thứ tự hiện trên màn hình khách, kèm âm báo khi sẵn sàng.
 
 ## 5. Quy tắc nghiệp vụ
 
-| **Quy tắc** | **Giá trị** `[giả định]` |
+| **Quy tắc** | **Giá trị** |
 | --- | --- |
 | Vào hàng đợi | Khi đơn `DA_THANH_TOAN` |
 | Thứ tự | Theo thời điểm thanh toán, cũ trước |
@@ -164,7 +162,7 @@ AC01: Đơn bị huỷ (TN04) → thẻ hiện nhãn "ĐÃ HUỶ" trong 30 giây
 
 AC02: Đơn đã có ly làm xong mà bị huỷ → báo rõ số ly đã làm để chủ quán xử lý.
 
-## 8. Chỉ số theo dõi `[giả định]`
+## 8. Chỉ số theo dõi
 
 | **Chỉ số** | **Định nghĩa** | **Mục tiêu MVP** |
 | --- | --- | --- |

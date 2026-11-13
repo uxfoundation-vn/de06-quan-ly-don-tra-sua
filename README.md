@@ -1,6 +1,6 @@
 # Đề 6 · Quản lý đơn hàng quán trà sữa
 
-> **Mã:** DE06 · **Độ khó:** 6/8 · **Vai trò:** 4 (thu ngân, pha chế, quản lý ca, chủ quán) · **Nền tảng:** Máy POS (tablet) · Màn pha chế (tablet) · Web quản lý `[giả định]`
+> **Mã:** DE06 · **Độ khó:** 6/8 · **Vai trò:** 4 (thu ngân, pha chế, quản lý ca, chủ quán) · **Nền tảng:** Máy POS (tablet) · Màn pha chế (tablet) · Web quản lý
 
 Hệ thống bán hàng cho một quán trà sữa: thu ngân nhận đơn tại quầy với món có nhiều tuỳ chọn, quầy pha chế nhận đơn ngay trên màn hình, khách thanh toán tiền mặt hoặc QR, kho nguyên liệu tự trừ theo công thức, chủ quán xem báo cáo ca. Đây là đề có **thao tác nhanh dưới áp lực giờ cao điểm** và **dữ liệu chảy qua nhiều màn hình cùng lúc**. Đề gồm 5 tính năng; mỗi tính năng có 1 PRD và 1 SRS riêng.
 
@@ -42,7 +42,7 @@ stateDiagram-v2
   DA_BO --> [*]
 ```
 
-Mỗi đơn chỉ vào màn pha chế **sau khi đã thanh toán** `[giả định]`. Kho bị trừ khi đơn `DA_THANH_TOAN` và được hoàn khi huỷ trước lúc pha chế (TN05).
+Mỗi đơn chỉ vào màn pha chế **sau khi đã thanh toán**. Kho bị trừ khi đơn `DA_THANH_TOAN` và được hoàn khi huỷ trước lúc pha chế (TN05).
 
 ## Kiến trúc màn hình
 
@@ -78,7 +78,7 @@ flowchart LR
 
 ## Bối cảnh chung
 
-Giờ cao điểm (trưa, sau giờ tan học) một quầy có thể nhận 60–100 đơn mỗi giờ `[giả định]`. Mỗi ly có size, mức đường, mức đá và nhiều topping, nên ghi sai là chuyện thường. Pha chế đọc phiếu viết tay dễ nhầm, khách không biết bao giờ tới lượt. Cuối ngày chủ quán khó biết thu bao nhiêu, nguyên liệu còn bao nhiêu.
+Giờ cao điểm (trưa, sau giờ tan học) một quầy có thể nhận 60–100 đơn mỗi giờ. Mỗi ly có size, mức đường, mức đá và nhiều topping, nên ghi sai là chuyện thường. Pha chế đọc phiếu viết tay dễ nhầm, khách không biết bao giờ tới lượt. Cuối ngày chủ quán khó biết thu bao nhiêu, nguyên liệu còn bao nhiêu.
 
 | **Nhóm người dùng** | **Nhu cầu chính** |
 | --- | --- |
@@ -94,9 +94,8 @@ Ngoài phạm vi cả đề: nhiều chi nhánh, giao hàng và đặt online, �
 
 - Màn POS mã `SCR-P..`, màn pha chế `SCR-K..`, Web quản lý `SCR-W..`.
 - Tiền tệ VND, không có số lẻ.
-- Mỗi nhân viên đăng nhập POS bằng mã PIN 4 số; quyền theo vai trò: thu ngân, pha chế, quản lý ca, chủ quán `[giả định]`. Quản lý ca là thu ngân hoặc pha chế được chủ quán cấp thêm quyền duyệt bằng PIN (giảm giá, huỷ đơn, hoàn tiền, chênh lệch két) và bật tắt hết món (TN01 BR-08); chủ quán có mọi quyền của quản lý ca.
+- Mỗi nhân viên đăng nhập POS bằng mã PIN 4 số; quyền theo vai trò: thu ngân, pha chế, quản lý ca, chủ quán. Quản lý ca là thu ngân hoặc pha chế được chủ quán cấp thêm quyền duyệt bằng PIN (giảm giá, huỷ đơn, hoàn tiền, chênh lệch két) và bật tắt hết món (TN01 BR-08); chủ quán có mọi quyền của quản lý ca.
 - Mã BR, MSG, UC đánh số liên tục trong cả đề: TN01 dùng BR-01–10, MSG-01–08; TN02 dùng BR-11–22, MSG-09–16; TN03 dùng BR-23–32, MSG-17–22; TN04 dùng BR-33–45, MSG-23–34; TN05 dùng BR-46–58, MSG-35–44. Mã bổ sung sau đánh tiếp từ số cuối: BR-59 (tên khách), MSG-45 (đơn giữ đang mở ở máy khác) ở SRS TN02.
-- Giá trị đánh dấu `[giả định]` dùng để dựng flow, cần PO hoặc BA xác nhận trước khi dùng.
 
 ## Danh sách màn hình
 

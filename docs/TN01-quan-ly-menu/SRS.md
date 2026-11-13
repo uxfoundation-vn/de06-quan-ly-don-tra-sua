@@ -1,8 +1,8 @@
-> **Mã:** DE06-TN01-SRS · **Trạng thái:** nháp · **Người viết:** Design (mock) · **PRD:** [PRD.md](PRD.md)
+> **Mã:** DE06-TN01-SRS · **Trạng thái:** đã chốt · **Người viết:** Design · **PRD:** [PRD.md](PRD.md)
 
 # UC-DE06-01 - Quản lý menu
 
-> **Bản mock.** Giá trị `[giả định]` cần BA xác nhận. Bán theo menu xem [SRS TN02](../TN02-tao-don-tai-quay/SRS.md); công thức dùng để trừ kho xem [SRS TN05](../TN05-kho-bao-cao-ca/SRS.md).
+> Bán theo menu xem [SRS TN02](../TN02-tao-don-tai-quay/SRS.md); công thức dùng để trừ kho xem [SRS TN05](../TN05-kho-bao-cao-ca/SRS.md).
 
 ## 1. Tổng quan
 
@@ -12,7 +12,7 @@
 | Actor | Chủ quán · Quản lý ca · Web quản lý · POS · Màn pha chế · Máy chủ |
 | Phạm vi | Danh mục, món, size, nhóm tuỳ chọn, công thức, bật tắt bán, đổi giá, ẩn, xoá, đồng bộ |
 | Ngoài phạm vi | Combo, giá theo giờ, menu nhiều chi nhánh, nhập từ file |
-| Nền tảng | Web quản lý; POS (bật tắt bán) `[giả định]` |
+| Nền tảng | Web quản lý; POS (bật tắt bán) |
 
 ## 2. User Story
 
@@ -34,7 +34,7 @@
 | BR-04 | **Nhóm tuỳ chọn**: tên, kiểu `CHON_MOT` hoặc `CHON_NHIEU`, min, max (`CHON_MOT`: min = max = 1), mặc định (bắt buộc với `CHON_MOT`). Lựa chọn: tên, giá cộng thêm (0–50.000 ₫), số phần tối đa mỗi lựa chọn (1–2) |
 | BR-05 | **Gắn nhóm vào món**: tối đa 5 nhóm mỗi món, có thứ tự hiển thị. Một nhóm gắn được nhiều món |
 | BR-06 | **Công thức món** theo size: danh sách (nguyên liệu, lượng, đơn vị). **Công thức tuỳ chọn**: lượng cho 1 phần (ví dụ trân châu 50 g). Thiếu công thức → món có cờ `THIEU_CONG_THUC` |
-| BR-07 | **Trạng thái bán**: món `DANG_BAN`, `HET_MON`, `AN`; lựa chọn `CON`, `HET`. `HET_MON` và `HET` tự về `DANG_BAN`/`CON` khi mở **ca đầu tiên của ngày** (ngày mở ca khác ngày mở của ca liền trước); mở ca thứ hai trong cùng ngày không tự bật lại `[giả định]` |
+| BR-07 | **Trạng thái bán**: món `DANG_BAN`, `HET_MON`, `AN`; lựa chọn `CON`, `HET`. `HET_MON` và `HET` tự về `DANG_BAN`/`CON` khi mở **ca đầu tiên của ngày** (ngày mở ca khác ngày mở của ca liền trước); mở ca thứ hai trong cùng ngày không tự bật lại |
 | BR-08 | **Quyền**: chủ quán sửa mọi thứ; quản lý ca chỉ bật tắt `HET_MON`, `HET` (từ POS hoặc Web); thu ngân, pha chế chỉ xem |
 | BR-09 | **Phiên bản menu**: mỗi lần lưu tạo `menu_version` mới; POS, màn pha chế nhận qua kết nối realtime ≤ 10 giây. Đơn đang tạo giữ giá theo phiên bản lúc thêm món vào giỏ (TN02) |
 | BR-10 | **Xoá món** chỉ khi không có trong đơn chưa ở trạng thái cuối; nếu có → gợi ý `AN`. Món đã xoá giữ tên, giá trong đơn cũ và báo cáo (dữ liệu chụp vào dòng đơn) |
@@ -290,7 +290,7 @@ flowchart TD
 
 ## 8. API
 
-| **API** | **Request chính** | **Response chính** | **Timeout / retry** `[giả định]` |
+| **API** | **Request chính** | **Response chính** | **Timeout / retry** |
 | --- | --- | --- | --- |
 | \[MenuGet\] | store_id, since_version | Danh mục, món, nhóm tuỳ chọn, trạng thái bán, menu_version | 5s / 2 lần |
 | \[CategorySave\] | Danh mục, thứ tự | – | 5s / 2 lần |
@@ -347,7 +347,7 @@ sequenceDiagram
 
 ## 10. Yêu cầu phi chức năng
 
-| **Mục** | **Yêu cầu** `[giả định]` |
+| **Mục** | **Yêu cầu** |
 | --- | --- |
 | Hiệu năng | Đồng bộ thay đổi tới POS ≤ 10 giây; **SCR-W01** ≤ 2 giây với 200 món |
 | Offline | POS dùng menu đã lưu khi mất mạng; hiện "Menu chưa cập nhật" khi chênh phiên bản |

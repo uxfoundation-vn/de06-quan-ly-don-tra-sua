@@ -1,8 +1,8 @@
-> **Mã:** DE06-TN05-SRS · **Trạng thái:** nháp · **Người viết:** Design (mock) · **PRD:** [PRD.md](PRD.md)
+> **Mã:** DE06-TN05-SRS · **Trạng thái:** đã chốt · **Người viết:** Design · **PRD:** [PRD.md](PRD.md)
 
 # UC-DE06-05 - Kho nguyên liệu và báo cáo ca
 
-> **Bản mock.** Giá trị `[giả định]` cần BA xác nhận. Công thức xem [SRS TN01](../TN01-quan-ly-menu/SRS.md); thanh toán, huỷ xem [SRS TN04](../TN04-thanh-toan-in-bill/SRS.md).
+> Công thức xem [SRS TN01](../TN01-quan-ly-menu/SRS.md); thanh toán, huỷ xem [SRS TN04](../TN04-thanh-toan-in-bill/SRS.md).
 
 ## 1. Tổng quan
 
@@ -12,7 +12,7 @@
 | Actor | Chủ quán · Quản lý ca · Thu ngân · POS · Web quản lý · Máy chủ |
 | Phạm vi | Nguyên liệu, trừ và hoàn kho, cảnh báo, nhập kho, hao hụt, kiểm kê, mở ca, chốt ca, báo cáo |
 | Ngoài phạm vi | Nhà cung cấp, đặt hàng tự động, giá vốn, lô và hạn dùng, nhiều chi nhánh |
-| Nền tảng | Web quản lý; POS (mở, chốt ca, nhập kho nhanh) `[giả định]` |
+| Nền tảng | Web quản lý; POS (mở, chốt ca, nhập kho nhanh) |
 
 ## 2. User Story
 
@@ -31,14 +31,14 @@
 | BR-46 | **Nguyên liệu**: tên (không trùng), đơn vị dùng (g, ml, cái), đơn vị mua và hệ số quy đổi (ví dụ 1 thùng = 12.000 ml), ngưỡng cảnh báo |
 | BR-47 | **Trừ kho** khi đơn `DA_THANH_TOAN`: với mỗi ly, cộng công thức size (BR-06) và công thức × số phần của từng lựa chọn; ghi biến động loại `BAN`. Món thiếu công thức → bỏ qua phần đó, ghi cờ |
 | BR-48 | **Huỷ đơn** (BR-45): ly chưa `XONG` → biến động `HOAN`; ly đã `XONG` → biến động `HAO_HUT` (đổi loại từ `BAN`, tồn không đổi) |
-| BR-49 | **Trạng thái tồn**: `DU` (≥ ngưỡng), `SAP_HET` (0 < tồn < ngưỡng), `HET` (tồn = 0), `AM` (tồn < 0). Ngưỡng mặc định = lượng dùng trung bình 1 ngày của 7 ngày gần nhất `[giả định]` |
+| BR-49 | **Trạng thái tồn**: `DU` (≥ ngưỡng), `SAP_HET` (0 < tồn < ngưỡng), `HET` (tồn = 0), `AM` (tồn < 0). Ngưỡng mặc định = lượng dùng trung bình 1 ngày của 7 ngày gần nhất |
 | BR-50 | **Dự kiến đủ dùng** = tồn / lượng dùng trung bình ngày (7 ngày gần nhất), làm tròn xuống, đơn vị ngày |
 | BR-51 | **Cảnh báo** khi chuyển sang `SAP_HET`, `HET` hoặc `AM`: banner Web, thông báo POS quản lý ca; mỗi nguyên liệu một lần mỗi trạng thái mỗi ngày. `HET` kèm gợi ý báo hết các món dùng nguyên liệu (UC-03 của TN01) |
 | BR-52 | **Phiếu nhập**: ≥ 1 dòng; số lượng > 0 theo đơn vị mua; quy đổi theo BR-46; biến động `NHAP`. Sửa phiếu chỉ trong ngày tạo và cần PIN chủ quán |
 | BR-53 | **Kiểm kê**: nhập số đếm thực tế; chênh lệch = đếm − tồn hệ thống; xác nhận → biến động `KIEM_KE` bằng chênh lệch. **Hao hụt thủ công**: số lượng, lý do (Đổ vỡ, Hỏng, Khác) → `HAO_HUT` |
 | BR-54 | **Ca**: mỗi quán tối đa 1 ca `DANG_MO`. Mở ca cần tiền đầu ca (≥ 0). Mở **ca đầu tiên của ngày** → chạy tự bật lại `HET_MON`, `HET` (BR-07) và đưa số thứ tự đơn về 1 (BR-40); ca sau trong cùng ngày không làm hai việc này. **Ca mở qua 00:00**: POS hiện MSG-42 lúc 00:00 và nhắc lại mỗi lần đăng nhập cho tới khi chốt; ca vẫn bán được, số thứ tự chạy tiếp, đơn tính vào ca đang mở và vào ngày theo `paid_at` ở báo cáo ngày (BR-58) |
 | BR-55 | **Điều kiện chốt ca**: không còn đơn `TAM_GIU`, `CHO_THANH_TOAN`, `CHO_QR`, `THIEU_TIEN`; không còn đơn đã thanh toán chưa `DA_GIAO` (`DA_THANH_TOAN`, `DANG_PHA_CHE`, `SAN_SANG`), phải giao hoặc huỷ trước; không còn đơn ngoại tuyến chưa đồng bộ. Yêu cầu hoàn `CHO_HOAN` **không chặn** chốt ca: được liệt kê ở mục "tiền dư QR chờ hoàn" của báo cáo ca (BR-57) và chuyển sang ca sau theo dõi cho tới khi `DA_HOAN` |
-| BR-56 | **Tiền mặt dự kiến** = tiền đầu ca + thu tiền mặt − hoàn tiền mặt. "Thu tiền mặt" ghi theo tổng đơn (không theo số tiền khách đưa), nên tiền thối không trừ thêm lần nữa; gồm cả phần bù tiền mặt của đơn QR thiếu (BR-37). "Hoàn tiền mặt" gồm cả hoàn cho đơn của ca trước bị huỷ trong ca này (BR-43). **Chênh lệch** = đếm thực tế − dự kiến. \|Chênh lệch\| > 50.000 ₫ → bắt buộc lý do và PIN quản lý ca `[giả định]` |
+| BR-56 | **Tiền mặt dự kiến** = tiền đầu ca + thu tiền mặt − hoàn tiền mặt. "Thu tiền mặt" ghi theo tổng đơn (không theo số tiền khách đưa), nên tiền thối không trừ thêm lần nữa; gồm cả phần bù tiền mặt của đơn QR thiếu (BR-37). "Hoàn tiền mặt" gồm cả hoàn cho đơn của ca trước bị huỷ trong ca này (BR-43). **Chênh lệch** = đếm thực tế − dự kiến. \|Chênh lệch\| > 50.000 ₫ → bắt buộc lý do và PIN quản lý ca |
 | BR-57 | **Báo cáo ca**: doanh thu theo phương thức, số đơn, số ly, giảm giá, đơn huỷ (số, tiền, người duyệt), tiền dư QR chờ hoàn, chênh lệch két. Lưu bản chụp, không đổi sau khi chốt. Đơn của ca đã chốt bị huỷ sau đó (BR-43) được ghi ở mục "Huỷ đơn của ca trước" trong báo cáo của ca thực hiện huỷ; báo cáo ngày (BR-58) cộng mục này nên doanh thu ngày vẫn đúng |
 | BR-58 | **Báo cáo ngày, khoảng ngày**: tổng hợp từ các ca; doanh thu theo giờ; top 10 món, top 5 topping theo số ly; so với cùng ngày tuần trước. Xuất CSV |
 
@@ -341,7 +341,7 @@ flowchart TD
 
 ## 8. API
 
-| **API** | **Request chính** | **Response chính** | **Timeout / retry** `[giả định]` |
+| **API** | **Request chính** | **Response chính** | **Timeout / retry** |
 | --- | --- | --- | --- |
 | \[StockConsume\] (nội bộ, khi thanh toán, huỷ) | order_id, event | Biến động, trạng thái tồn mới, cảnh báo | Chạy trong giao dịch thanh toán, huỷ |
 | \[StockList\] | store_id, filter | Nguyên liệu, tồn, trạng thái, đủ dùng | 3s / 1 lần |
@@ -404,7 +404,7 @@ MSG-33 dùng lại từ SRS TN04.
 
 ## 10. Yêu cầu phi chức năng
 
-| **Mục** | **Yêu cầu** `[giả định]` |
+| **Mục** | **Yêu cầu** |
 | --- | --- |
 | Hiệu năng | Trừ kho không làm chậm thanh toán quá 200 ms; **SCR-W04** hôm nay ≤ 3 giây; báo cáo 30 ngày ≤ 10 giây |
 | Toàn vẹn | Trừ kho nằm trong cùng giao dịch với chuyển `DA_THANH_TOAN`; biến động kho không xoá, chỉ thêm điều chỉnh |

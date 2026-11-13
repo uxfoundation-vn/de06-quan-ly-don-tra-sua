@@ -1,8 +1,6 @@
-> **Mã:** DE06-TN04-PRD · **Trạng thái:** nháp · **Người viết:** Design (mock) · **SRS:** [SRS.md](SRS.md)
+> **Mã:** DE06-TN04-PRD · **Trạng thái:** đã chốt · **Người viết:** Design · **SRS:** [SRS.md](SRS.md)
 
 # PRD Thanh toán và in bill (Quản lý đơn hàng quán trà sữa)
-
-> **Bản mock.** Con số đánh dấu `[giả định]` dùng để dựng flow, cần PO xác nhận trước khi dùng.
 
 ## 1. Bối cảnh và vấn đề
 
@@ -23,9 +21,9 @@ Sau khi nhập đơn ([TN02](../TN02-tao-don-tai-quay/PRD.md)), thu ngân thu ti
 
 ### 1.3 Mục tiêu
 
-- Thanh toán tiền mặt trong ≤ 10 giây, QR trong ≤ 30 giây kể từ khi khách quét `[giả định]`.
+- Thanh toán tiền mặt trong ≤ 10 giây, QR trong ≤ 30 giây kể từ khi khách quét.
 - 100% giao dịch QR được xác nhận tự động từ ngân hàng, không dựa vào ảnh chụp.
-- Chênh lệch két cuối ca ≤ 0,1% doanh thu tiền mặt `[giả định]`.
+- Chênh lệch két cuối ca ≤ 0,1% doanh thu tiền mặt.
 
 ## 2. Người dùng
 
@@ -73,7 +71,7 @@ Huỷ đơn đã thanh toán cần PIN quản lý ca và lý do; mọi lần hu�
 
 ## 5. Quy tắc nghiệp vụ
 
-| **Quy tắc** | **Giá trị** `[giả định]` |
+| **Quy tắc** | **Giá trị** |
 | --- | --- |
 | Gợi ý mệnh giá | Số tiền đúng, và 3 mệnh giá tròn gần nhất (ví dụ tổng 47.000 → 50.000, 100.000, 200.000) |
 | QR động | Chứa số tiền và mã đơn; hết hạn sau 10 phút |
@@ -165,7 +163,7 @@ AC03: Đơn huỷ → báo màn pha chế ngay (TN03); hoàn kho nếu chưa pha
 
 AC04: Không huỷ được đơn đã giao quá 30 phút.
 
-## 8. Chỉ số theo dõi `[giả định]`
+## 8. Chỉ số theo dõi
 
 | **Chỉ số** | **Định nghĩa** | **Mục tiêu MVP** |
 | --- | --- | --- |
